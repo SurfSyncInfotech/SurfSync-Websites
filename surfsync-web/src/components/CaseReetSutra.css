@@ -1,0 +1,155 @@
+/* ReetSutra case study: differences from the Foodies layout (same 1440px design grid) */
+
+/* hero art: laptop + two phones, x 646-1368 of the design (700px wide, native 2886px source) */
+@media (min-width: 901px) {
+  .is-reet-case .cs-hero {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 700px);
+  }
+
+  .is-reet-case .cs-hero-art {
+    max-width: 700px;
+    aspect-ratio: 2886 / 1961;
+    margin-right: 4px;
+  }
+}
+
+@media (min-width: 901px) {
+  .is-reet-case .cs-hero {
+    padding-top: 73px;
+  }
+
+  .is-reet-case .cs-hero-art {
+    position: relative;
+    top: 0;
+  }
+
+  .is-reet-case .cs-stats {
+    gap: 62px;
+    margin-top: 41px;
+    padding-bottom: 35px;
+  }
+}
+
+/* needs box: 151px tall; single-line items sit 10px lower than the two-line ones */
+@media (min-width: 901px) {
+  .is-reet-case .cs-needs {
+    margin-top: 50px;
+    position: relative;
+    left: -20px;
+    padding: 47px 28px 14px;
+  }
+
+  .is-reet-case .cs-needs li {
+    align-items: flex-start;
+  }
+
+  .is-reet-case .cs-needs img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .is-reet-case .cs-needs li > div {
+    margin-top: 9px;
+  }
+
+  .is-reet-case .cs-needs li:nth-child(odd) {
+    margin-top: 10px;
+  }
+
+  .is-reet-case .cs-needs span {
+    max-width: 175px;
+  }
+}
+
+.is-reet-case .cs-process .cs-body {
+  letter-spacing: 0;
+}
+
+.is-reet-case .cs-step.is-2 span {
+  max-width: 275px;
+}
+
+/* product: monitor + Mac Studio crop starts at x 600; panels sit 30px lower than the Foodies layout */
+@media (min-width: 901px) {
+  .is-reet-case .cs-product-art {
+    margin-top: 80px;
+    margin-left: -81px;
+  }
+
+  .is-reet-case .cs-product {
+    overflow: hidden;
+  }
+
+  .is-reet-case .cs-product-art img {
+    width: 861px;
+    max-width: none;
+  }
+
+  .is-reet-case .cs-roles {
+    gap: 22px;
+    margin-top: 51px;
+  }
+
+  .is-reet-case .cs-roles li:nth-child(2) {
+    margin-bottom: 0;
+  }
+
+  .is-reet-case .cs-roles strong {
+    max-width: none;
+  }
+
+  .is-reet-case .cs-roles span {
+    max-width: 190px;
+  }
+
+  .is-reet-case .cs-product .cs-body {
+    max-width: 520px;
+  }
+}
+
+@media (min-width: 901px) {
+  .is-reet-case .cs-product {
+    padding-bottom: 85px;
+  }
+
+  .is-reet-case .cs-script {
+    top: 298px;
+    left: -33px;
+    z-index: 1;
+  }
+}
+
+/* devices: 1290px crop, x 40-1330 of the design */
+.is-reet-case .cs-devices {
+  width: 88.19%;
+  margin: 30px 0 0 4.17%;
+}
+
+@media (max-width: 900px) {
+  .is-reet-case .cs-devices {
+    width: calc(100% - 40px);
+    margin: 40px auto 0;
+  }
+}
+
+@media (min-width: 901px) {
+  .is-reet-case .cs-tools {
+    margin-top: 107px;
+  }
+}
+
+
+.is-reet-case .cs-hero-art img {
+  display: block;
+  width: 100%;
+}
+
+.is-reet-case .cs-hero .cs-body {
+  max-width: 395px;
+}
+
+@media (min-width: 901px) {
+  .is-reet-case .cs-process {
+    margin-top: -6px;
+  }
+}

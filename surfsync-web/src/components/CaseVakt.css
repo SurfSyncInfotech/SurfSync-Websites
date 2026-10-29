@@ -1,0 +1,124 @@
+/* VAKT case study: differences from the shared case-study layout (1440px design) */
+
+/* art box spans x 650-1360 of the design, so the copy column gets ~530px */
+.is-vakt .cs-hero {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 710px);
+  gap: 0;
+}
+
+.is-vakt .cs-hero-art img {
+  width: 100%;
+}
+
+.is-vakt .cs-hero .cs-body {
+  max-width: 430px;
+}
+
+.cs-lead {
+  margin: 30px 0 0;
+  color: #0f4152;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.is-vakt .cs-lead + .cs-body {
+  margin-top: 4px;
+  max-width: 625px;
+}
+
+.is-vakt .cs-process {
+  padding-top: 149px;
+}
+
+.is-vakt .cs-product {
+  margin-top: 79px;
+}
+
+.is-vakt .cs-quote {
+  margin-right: 0;
+}
+
+/* product laptop: x 575-1429, 128px below the section top */
+.is-vakt .cs-product-art {
+  margin: 65px -96px 0 -79px;
+}
+
+.is-vakt .cs-product-art img {
+  max-width: 854px;
+}
+
+.is-vakt .cs-script {
+  top: 318px;
+  left: -6px;
+}
+
+.is-vakt .cs-roles span {
+  max-width: 365px;
+}
+
+.is-vakt .cs-roles li:first-child span {
+  max-width: 250px;
+}
+
+.is-vakt .cs-roles li:last-child span {
+  max-width: 315px;
+}
+
+/* devices: x -4 to 1260, 50px under the key-features band */
+.is-vakt .cs-devices {
+  width: 87.8%;
+  margin: 50px 0 0 -0.3%;
+}
+
+.is-vakt .cs-tools {
+  margin-top: 112px;
+}
+
+@media (max-width: 1100px) {
+  .is-vakt .cs-product-art {
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 900px) {
+  .is-vakt .cs-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .is-vakt .cs-product-art {
+    margin: 40px 0 0;
+  }
+
+  .is-vakt .cs-script {
+    top: -44px;
+    right: 18px;
+    left: auto;
+  }
+
+  .is-vakt .cs-devices {
+    width: calc(100% - 40px);
+    margin: 40px auto 0;
+  }
+
+  .is-vakt .cs-tools {
+    margin-top: 72px;
+  }
+
+  .is-vakt .cs-process {
+    padding-top: 76px;
+  }
+
+  .is-vakt .cs-product {
+    margin-top: 80px;
+  }
+}
+
+/* let the two-line title run under the art box edge, as in the design (x 100-630) */
+@media (min-width: 901px) {
+  .is-vakt .cs-hero h1 {
+    margin-right: -80px;
+    font-size: clamp(40px, 4vw, 58px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+}

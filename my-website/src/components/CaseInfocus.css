@@ -1,0 +1,291 @@
+/* Infocus Publications case study: differences from the shared case-study layout (1440px design) */
+
+/* art: laptop + phones span x 653-1346, y 161-641 of the design */
+.is-infocus .cs-hero {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 693px);
+  gap: 0;
+}
+
+.is-infocus .cs-hero-art {
+  max-width: 693px;
+  aspect-ratio: 2079 / 1442;
+  margin-right: -6px;
+}
+
+.is-infocus .cs-hero-art img {
+  width: 100%;
+}
+
+.is-infocus .cs-hero-sub {
+  margin-top: 14px;
+}
+
+.is-infocus .cs-hero .cs-body {
+  max-width: 416px;
+  margin-top: 20px;
+}
+
+.is-infocus .cs-hero-copy {
+  margin-bottom: 28px;
+}
+
+.is-infocus .cs-hero h1 {
+  margin-top: 20px;
+}
+
+/* stats box: x 122-1347, 173px tall, labels on a 28px line */
+.is-infocus .cs-stats {
+  margin-top: 33px;
+  padding-bottom: 39px;
+}
+
+.is-infocus .cs-stats span {
+  max-width: none;
+  line-height: 28px;
+  white-space: pre-line;
+}
+
+/* quote card: x 826-1272, level with the kicker */
+.is-infocus .cs-idea-head {
+  grid-template-columns: minmax(0, 1fr) 514px;
+}
+
+.is-infocus .cs-idea {
+  padding-top: 88px;
+}
+
+.is-infocus .cs-idea .cs-body {
+  margin-top: 21px;
+}
+
+.is-infocus .cs-quote {
+  gap: 14px;
+  margin-top: 21px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.is-infocus .cs-needs {
+  margin-top: 70px;
+}
+
+/* needs box: 135px tall, content sits high as in the design */
+@media (min-width: 901px) {
+  .is-infocus .cs-needs {
+    padding: 37px 28px 16px;
+  }
+}
+
+.is-infocus .cs-process {
+  padding-top: 177px;
+}
+
+.is-infocus .cs-process .cs-body {
+  margin-top: 22px;
+}
+
+.is-infocus .cs-process .cs-btn {
+  margin-top: 29px;
+}
+
+/* step copy wraps at ~276px, as in the design */
+.is-infocus .cs-step span {
+  max-width: 280px;
+  margin-top: 6px;
+}
+
+.is-infocus .cs-product {
+  margin-top: 85px;
+  padding-top: 64px;
+}
+
+.is-infocus .cs-product .cs-body {
+  margin-top: 24px;
+}
+
+.is-infocus .cs-product h2 {
+  font-size: clamp(34px, 3.75vw, 54px);
+  line-height: 1;
+}
+
+/* panels on an 80px pitch */
+.is-infocus .cs-roles {
+  gap: 20px;
+  margin-top: 37px;
+}
+
+.is-infocus .cs-roles img {
+  width: 60px;
+  height: 60px;
+}
+
+.is-infocus .cs-roles span {
+  max-width: 190px;
+}
+
+/* laptop: x 591-1426, y 2437-2878 */
+.is-infocus .cs-product-art {
+  margin: 103px -100px 0 -63px;
+}
+
+.is-infocus .cs-product-art img {
+  max-width: 835px;
+}
+
+.is-infocus .cs-script {
+  top: 275px;
+  left: -52px;
+}
+
+/* devices: x 114-1249, 125px under the key-features band */
+.is-infocus .cs-devices {
+  width: 78.8%;
+  margin: 123px 0 0 7.95%;
+}
+
+.is-infocus .cs-features-band {
+  margin-top: 67px;
+}
+
+.is-infocus .cs-tools {
+  margin-top: 150px;
+}
+
+/* tools band: 436px tall */
+.is-infocus .cs-tools {
+  padding-top: 44px;
+  padding-bottom: 83px;
+}
+
+.is-infocus .cs-tools ul {
+  margin-top: 68px;
+}
+
+/* testimonial: kicker 160px under the tools band, card 24px under the kicker */
+.is-infocus .cs-proof {
+  padding-top: 156px;
+}
+
+.is-infocus .cs-proof h2 {
+  line-height: 1.02;
+}
+
+.is-infocus .cs-proof-copy > p:not(.cs-kicker) {
+  margin-top: 21px;
+}
+
+.is-infocus .cs-proof-card {
+  margin-top: 26px;
+}
+
+/* the first title line runs past the copy column, above the laptop */
+@media (min-width: 1101px) {
+  .is-infocus .cs-product h2 {
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 1100px) {
+  .is-infocus .cs-hero {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 58%);
+  }
+
+  .is-infocus .cs-idea-head {
+    grid-template-columns: 1fr;
+  }
+
+  .is-infocus .cs-quote {
+    margin-top: 0;
+  }
+
+  .is-infocus .cs-product-art {
+    margin-right: -40px;
+  }
+}
+
+@media (max-width: 900px) {
+  .is-infocus .cs-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .is-infocus .cs-hero-art {
+    margin: 10px auto 0;
+  }
+
+  .is-infocus .cs-hero .cs-body {
+    max-width: 480px;
+  }
+
+  .is-infocus .cs-product-art {
+    margin: 64px -20px 0 0;
+  }
+
+  .is-infocus .cs-script {
+    top: -84px;
+    right: 18px;
+    left: auto;
+  }
+
+  .is-infocus .cs-devices {
+    width: calc(100% - 40px);
+    margin: 40px auto 0;
+  }
+
+  .is-infocus .cs-tools {
+    margin-top: 72px;
+  }
+
+  .is-infocus .cs-hero-copy {
+    margin-bottom: 0;
+  }
+
+  .is-infocus .cs-stats {
+    margin-top: 20px;
+  }
+
+  .is-infocus .cs-process {
+    padding-top: 76px;
+  }
+
+  .is-infocus .cs-product {
+    margin-top: 80px;
+  }
+}
+
+@media (min-width: 901px) {
+  /* title runs over two lines: 52px caps on a 53px pitch */
+  .is-infocus .cs-hero h1 {
+    font-size: clamp(40px, 3.62vw, 52px);
+    font-weight: 700;
+    line-height: 1.02;
+    letter-spacing: 0;
+  }
+
+  .is-infocus .cs-stats {
+    margin-right: -7px;
+  }
+
+  /* section titles: 52px caps with no tracking */
+  .is-infocus h2,
+  .is-infocus .cs-product h2 {
+    margin-top: 20px;
+    font-size: clamp(34px, 3.62vw, 52px);
+    letter-spacing: 0;
+  }
+
+  /* light band: 734px tall */
+  .is-infocus .cs-product {
+    padding-bottom: 123px;
+  }
+
+  .is-infocus .cs-features {
+    padding-top: 92px;
+  }
+}
+
+/* the laptop reaches the page edge only as far as the side gutter allows, so it is never cut off on narrower or zoomed screens */
+@media (min-width: 901px) {
+  .is-infocus .cs-product-art {
+    margin-right: min(0px, calc((1256px - 100vw) / 2));
+  }
+}

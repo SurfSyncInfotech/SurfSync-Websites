@@ -1,0 +1,170 @@
+/* ClinicSpots case study: differences from the Modern Auto Parts layout (1440px design) */
+
+/* step copy wraps a little earlier than the Modern Auto layout: "Understand" runs to three lines */
+.is-clinic-case .cs-step span {
+  max-width: 275px;
+}
+
+/* devices: x 115-1249, 124px under the key-features band */
+.is-clinic-case .cs-devices {
+  width: 78.75%;
+  margin: 124px 0 0 7.99%;
+}
+
+/* laptop: the crop starts 7px above the lid, 839px wide (x 591-1430) */
+@media (min-width: 901px) {
+  .is-clinic-case .cs-product-art {
+    margin-top: 96px;
+  }
+
+  .is-clinic-case .cs-product-art img {
+    max-width: 839px;
+  }
+}
+
+@media (max-width: 900px) {
+  .is-clinic-case .cs-devices {
+    width: calc(100% - 40px);
+    margin: 40px auto 0;
+  }
+}
+
+/* product panels: icons at y 2621, "Treatment Comparison" on two lines; light band 734px tall */
+@media (min-width: 901px) {
+  .is-clinic-case .cs-roles {
+    gap: 23px;
+    margin-top: 47px;
+  }
+
+  .is-clinic-case .cs-roles strong {
+    max-width: 200px;
+  }
+
+  .is-clinic-case .cs-product {
+    padding-bottom: 66px;
+  }
+}
+
+/* section gaps measured against the design: band 2px, tools 3px and testimonial 3px tighter */
+@media (min-width: 901px) {
+  .is-clinic-case .cs-features-band {
+    margin-top: 65px;
+  }
+
+  .is-clinic-case .cs-tools {
+    margin-top: 147px;
+  }
+
+  .is-clinic-case .cs-proof {
+    padding-top: 157px;
+  }
+}
+
+/* the four-line hero copy sits 12px higher than the centred default, as in the design */
+@media (min-width: 901px) {
+  .is-clinic-case .cs-hero-copy {
+    margin-bottom: 52px;
+  }
+}
+
+/* process: head, button and step positions measured against the design (desktop) */
+@media (min-width: 901px) {
+  .is-clinic-case .cs-process-head {
+    top: -2px;
+  }
+
+  .is-clinic-case .cs-process .cs-body {
+    margin-top: 21px;
+  }
+
+  .is-clinic-case .cs-process .cs-btn {
+    gap: 12px;
+    height: 48px;
+    margin-top: 28px;
+    padding: 0 27px 0 24px;
+    box-sizing: border-box;
+    font-size: 14px;
+  }
+
+  .is-clinic-case .cs-step.is-1 {
+    top: 529px;
+  }
+
+  .is-clinic-case .cs-step.is-2 {
+    top: 397px;
+  }
+
+  .is-clinic-case .cs-step.is-1 i,
+  .is-clinic-case .cs-step.is-2 i {
+    top: -92px;
+  }
+
+  .is-clinic-case .cs-step.is-1 b {
+    top: -106px;
+  }
+
+  .is-clinic-case .cs-step.is-2 b {
+    top: -104px;
+  }
+}
+
+@media (min-width: 901px) {
+  .case-page.is-clinic-case .cs-curve {
+    top: 83px;
+  }
+}
+
+@media (min-width: 901px) {
+  .is-clinic-case .cs-step.is-3 {
+    top: 148px;
+  }
+
+  .is-clinic-case .cs-step.is-3 i {
+    top: -92px;
+  }
+
+  .is-clinic-case .cs-step.is-3 b {
+    top: -105px;
+    left: 162px;
+    font-size: 205px;
+  }
+
+  .is-clinic-case .cs-blob {
+    top: 33px;
+  }
+}
+
+/* script note: lighter and a touch larger, 9px lower, as in the design */
+@media (min-width: 901px) {
+  .is-clinic-case .cs-script {
+    top: 284px;
+    font-size: 25px;
+    font-weight: 400;
+    line-height: 1.04;
+  }
+}
+
+/* testimonial stars: larger and more open, as in the design */
+.is-clinic-case .cs-proof-card em {
+  margin-top: 4px;
+  font-size: 28px;
+  line-height: 1.1;
+  letter-spacing: 5px;
+}
+
+.is-clinic-case .cs-proof-card p {
+  color: #111;
+}
+
+/* copy that runs about 2% wider in the design: process intro, testimonial intro and quote */
+.is-clinic-case .cs-process .cs-body,
+.is-clinic-case .cs-proof-copy > p:not(.cs-kicker),
+.is-clinic-case .cs-proof-card p {
+  letter-spacing: 0.009em;
+}
+
+@media (min-width: 901px) {
+  .is-clinic-case .cs-proof h2 {
+    margin-top: 20px;
+  }
+}

@@ -1,0 +1,59 @@
+/* The Natural Ayurved case study: differences from the Foodies layout (same 1440px design grid) */
+
+/* hero copy: three lines at 415px in the design */
+@media (min-width: 901px) {
+  .is-ayurved-case .cs-hero .cs-body {
+    max-width: 432px;
+    letter-spacing: 0.01em;
+  }
+}
+
+/* needs box: the copy runs two lines, so the box is 151px tall */
+@media (min-width: 901px) {
+  .is-ayurved-case .cs-needs {
+    padding: 39px 28px 21px;
+  }
+
+  .is-ayurved-case .cs-needs li {
+    align-items: flex-start;
+  }
+
+  .is-ayurved-case .cs-needs img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .is-ayurved-case .cs-needs li > div {
+    margin-top: 9px;
+  }
+
+  .is-ayurved-case .cs-needs span {
+    max-width: 175px;
+  }
+}
+
+/* process: intro runs a touch wider and the Develop copy wraps earlier */
+.is-ayurved-case .cs-process .cs-body {
+  letter-spacing: 0.01em;
+}
+
+.is-ayurved-case .cs-step.is-2 span {
+  max-width: 273px;
+}
+
+/* body copy runs on a 24.5px line in the design */
+.is-ayurved-case .cs-body {
+  line-height: 24.5px;
+}
+
+/* product panels sit 21px lower than the Foodies layout, on a 105px pitch */
+@media (min-width: 901px) {
+  .is-ayurved-case .cs-roles {
+    gap: 25px;
+    margin-top: 51px;
+  }
+
+  .is-ayurved-case .cs-roles li:nth-child(2) {
+    margin-bottom: 0;
+  }
+}

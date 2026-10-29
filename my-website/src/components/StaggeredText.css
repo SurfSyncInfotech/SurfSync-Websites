@@ -1,0 +1,59 @@
+.st {
+  display: inline;
+}
+
+.st-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.st-anim {
+  display: inline;
+}
+
+.st-row {
+  display: inline;
+}
+
+.st-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.st-piece {
+  display: inline-block;
+  opacity: 0;
+  animation: st-in var(--st-dur, 0.75s) cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--st-delay, 0s) + var(--i) * var(--st-gap, 0.045s));
+  will-change: transform, opacity, filter;
+}
+
+.st-line {
+  display: inline-block;
+}
+
+@keyframes st-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.55em);
+    filter: blur(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .st-piece {
+    opacity: 1;
+    animation: none;
+    will-change: auto;
+  }
+}

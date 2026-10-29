@@ -1,0 +1,657 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap");
+
+/* service detail pages (AI & Automation, Web Development, ...): measurements follow
+   the 1440px designs; the shared 88px navbar sits above */
+.sd-page {
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+  color: #131927;
+  font-family: "Manrope", "Inter", sans-serif;
+}
+
+.sd-page > section {
+  position: relative;
+  z-index: 1;
+}
+
+/* optional wave line art (vector, sharp at any zoom), laid out on the 1440px design grid */
+.sd-waves-hero {
+  position: absolute;
+  top: -88px;
+  left: 50%;
+  width: max(100%, 1440px);
+  max-width: none;
+  height: auto;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.sd-waves-body {
+  position: absolute;
+  top: 682px;
+  left: 50%;
+  overflow: hidden;
+  width: 1440px;
+  height: 1011px;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.sd-waves-body img {
+  display: block;
+  width: 1440px;
+  max-width: none;
+  height: 2300px;
+}
+
+.sd-hero {
+  padding: 78px 16px 0;
+  text-align: center;
+}
+
+.sd-kicker,
+.sd-label {
+  color: #000;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  text-transform: uppercase;
+}
+
+.sd-hero h1 {
+  margin-top: 30px;
+  color: #131927;
+  font-size: clamp(40px, 4.45vw, 64px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.047;
+}
+
+.sd-hero h1 span {
+  color: #2a9cb8;
+}
+
+.sd-hero h1 span.is-orange {
+  color: #f68713;
+}
+
+.sd-lead {
+  max-width: 596px;
+  margin: 20px auto 0;
+  color: #617078;
+  font-size: 18px;
+  line-height: 28px;
+}
+
+.sd-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 25px;
+}
+
+.sd-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 54px;
+  padding: 0 32px;
+  border-radius: 27px;
+  font-size: 16px;
+  font-weight: 600;
+  transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+}
+
+.sd-btn:hover {
+  transform: translateY(-2px);
+}
+
+.sd-btn-primary {
+  background: #f68713;
+  color: #fff;
+}
+
+.sd-btn-ghost {
+  border: 1px solid #dfe5e8;
+  background: #fff;
+  color: #131927;
+}
+
+.sd-btn-ghost:hover {
+  border-color: #131927;
+}
+
+.sd-btn-ghost svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* full-resolution artwork (1536px) shown at 807px, so it stays sharp up to 190% zoom */
+.sd-hero-art {
+  display: block;
+  width: 807px;
+  max-width: 100%;
+  height: auto;
+  margin: 48px auto 0;
+}
+
+.sd-block {
+  width: min(1240px, calc(100% - 32px));
+  margin: 0 auto;
+}
+
+.sd-capabilities {
+  padding-top: 76px;
+  scroll-margin-top: 16px;
+}
+
+.sd-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.sd-head h2 {
+  margin-top: 12px;
+  color: #131927;
+  font-size: clamp(32px, 3.34vw, 48px);
+  font-weight: 700;
+  line-height: 1.083;
+}
+
+.sd-head h2 span {
+  color: #f68713;
+}
+
+.sd-head > div {
+  min-width: 0;
+}
+
+.sd-head-text {
+  flex: 0 1 var(--head-text, 460px);
+  max-width: var(--head-text, 460px);
+  margin-top: 32px;
+  color: #617078;
+  font-size: 18px;
+  line-height: 28px;
+}
+
+.sd-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-top: 76px;
+  list-style: none;
+}
+
+.sd-card {
+  min-height: 237px;
+  padding: 24px 21px 28px 23px;
+  border: 1px solid #e7ecee;
+  border-radius: 14px;
+  background: #fff;
+  outline: none;
+  cursor: default;
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sd-card:focus-visible {
+  outline: 2px solid #2a9cb8;
+  outline-offset: 3px;
+}
+
+.sd-icon {
+  display: grid;
+  place-items: center;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: #eef9fb;
+  color: #2a9cb8;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.sd-icon svg {
+  width: 32px;
+  height: 32px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* the supplied 36px icons carry their own stroke widths */
+.sd-icon svg.is-36 {
+  width: 36px;
+  height: 36px;
+  stroke-width: 2.5;
+}
+
+.sd-icon.is-green {
+  color: #1f9d6b;
+}
+
+.sd-icon.is-mint {
+  color: #2d9b73;
+}
+
+.sd-icon img {
+  display: block;
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.sd-icon.is-orange {
+  color: #f68713;
+}
+
+.sd-icon.is-peach {
+  background: #fff4ec;
+  color: #f68713;
+}
+
+.sd-icon.is-navy {
+  color: #103e4d;
+}
+
+.sd-icon.is-red {
+  background: #fff4ec;
+  color: #e5484d;
+}
+
+.sd-card h3 {
+  margin-top: 24px;
+  color: #131927;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 28px;
+  transition: color 0.3s ease;
+}
+
+.sd-card p {
+  margin-top: 7px;
+  color: #617078;
+  font-size: 16px;
+  line-height: 24px;
+  transition: color 0.3s ease;
+}
+
+.sd-cards-dark .sd-card.is-active {
+  border-color: #103e4d;
+  background: #103e4d;
+  box-shadow: 0 4px 12px rgba(16, 62, 77, 0.25);
+}
+
+.sd-cards-dark .sd-card.is-active .sd-icon {
+  background: #f0fbfd;
+  color: #103e4d;
+}
+
+.sd-cards-orange .sd-card.is-active {
+  border-color: #f68713;
+  background: #f68713;
+  box-shadow: 0 4px 14px rgba(246, 135, 19, 0.35);
+}
+
+.sd-cards-orange .sd-card.is-active .sd-icon {
+  background: #fff;
+  color: #f68713;
+}
+
+.sd-card.is-active h3,
+.sd-card.is-active p {
+  color: #fff;
+}
+
+/* the design's band is 1440 × 554; longer card copy may grow it */
+.sd-problems {
+  min-height: 554px;
+  margin-top: 85px;
+  padding: 51px 0 93px;
+  background: #f0fbfd;
+}
+
+.sd-problems .sd-head h2 {
+  margin-top: 10px;
+}
+
+.sd-problems .sd-head-text {
+  margin-top: 13px;
+}
+
+.sd-problems .sd-cards {
+  margin-top: 79px;
+}
+
+.sd-problems .sd-card h3 {
+  margin-top: 20px;
+}
+
+.sd-problems .sd-card p {
+  margin-top: 6px;
+  font-size: 16px;
+  line-height: 22px;
+}
+
+.sd-industries {
+  width: min(1260px, calc(100% - 32px));
+  padding: 85px 0 93px;
+}
+
+.sd-head.is-row {
+  align-items: flex-end;
+}
+
+.sd-industries .sd-head h2 {
+  font-size: clamp(28px, 2.78vw, 40px);
+  line-height: 1.2;
+}
+
+.sd-more {
+  margin-bottom: 26px;
+  color: #2a9cb8;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  white-space: nowrap;
+}
+
+/* the design's thin arrow, 5px after the text and centred on the x-height */
+.sd-more-arrow {
+  display: inline-block;
+  width: 10.25px;
+  height: 6.75px;
+  margin-left: 5.3px;
+  vertical-align: 1.07px;
+  fill: currentColor;
+}
+
+.sd-more:hover {
+  text-decoration: underline;
+}
+
+.sd-industry-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+  margin-top: 42px;
+  list-style: none;
+}
+
+.sd-industry {
+  overflow: hidden;
+  border: 1px solid #e7ecee;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(19, 25, 39, 0.05);
+}
+
+.sd-industry-photo {
+  display: grid;
+  place-items: center;
+  height: 154px;
+  border-bottom: 1px solid #e7ecee;
+  background: linear-gradient(135deg, #f0fbfd, #e3f4f8);
+  color: #b7dde6;
+}
+
+.sd-industry-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* illustrations scale with the card instead of being cropped to a fixed
+   height, so the whole picture stays in view at any width or zoom level */
+.sd-industry-photo.has-photo {
+  height: auto;
+  aspect-ratio: 295 / 153;
+  border-bottom: 0;
+  background: #f0fbfd;
+}
+
+.sd-industry-photo.has-photo img {
+  object-fit: contain;
+}
+
+.sd-industry-photo > svg {
+  width: 56px;
+  height: 56px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sd-industry-body {
+  padding: 20px 19px 36px;
+}
+
+.sd-icon.is-small {
+  width: 56px;
+  height: 56px;
+  background: #d9f1f6;
+}
+
+.sd-icon.is-small.is-green {
+  background: #d8f3e8;
+}
+
+/* paler icon circles, for pages whose design uses them */
+.is-light-icons .sd-icon.is-small {
+  background: #f0fbfd;
+}
+
+.is-light-icons .sd-icon.is-small.is-green {
+  background: #eefaf4;
+}
+
+.sd-icon.is-small svg {
+  width: 32px;
+  height: 32px;
+  stroke-width: 1.8;
+}
+
+.sd-icon svg.is-filled {
+  fill: currentColor;
+  stroke: none;
+}
+
+/* compact industry cards (e-commerce design): 297 × 336 cards with 20px
+   corners, a 297 × 154 illustration band and 42px icon circles */
+.sd-industries.is-compact .sd-head h2 {
+  font-size: clamp(28px, 2.67vw, 38.5px);
+  line-height: 45px;
+}
+
+.is-compact .sd-industry-grid {
+  gap: 24px;
+  margin-top: 46px;
+}
+
+.is-compact .sd-industry {
+  border-radius: 20px;
+}
+
+.is-compact .sd-industry-photo.has-photo {
+  aspect-ratio: 297 / 154;
+}
+
+.is-compact .sd-industry-body {
+  padding: 20px 20px 38px;
+}
+
+.is-compact .sd-icon.is-small {
+  width: 42px;
+  height: 42px;
+}
+
+.is-compact .sd-icon.is-small svg {
+  width: 26px;
+  height: 26px;
+}
+
+.is-compact .sd-industry h3 {
+  margin-top: 10px;
+}
+
+.is-compact .sd-industry p {
+  margin-top: 3px;
+}
+
+.sd-industry h3 {
+  margin-top: 13px;
+  color: #131927;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
+}
+
+.sd-industry p {
+  margin-top: 6px;
+  color: #617078;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+@media (max-width: 1100px) {
+  .sd-head-text {
+    font-size: 16px;
+    line-height: 26px;
+  }
+
+  .sd-cards,
+  .sd-industry-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* stack heading and intro once the side-by-side layout would squeeze the heading */
+@media (max-width: 1000px) {
+  .sd-head,
+  .sd-head.is-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .sd-head-text,
+  .sd-problems .sd-head-text {
+    flex: none;
+    max-width: 640px;
+    margin-top: 0;
+  }
+
+  .sd-more {
+    margin-bottom: 0;
+  }
+
+  .sd-cards,
+  .sd-problems .sd-cards {
+    margin-top: 40px;
+  }
+}
+
+@media (max-width: 760px) {
+  .sd-waves-body {
+    display: none;
+  }
+
+  .sd-hero {
+    padding-top: 56px;
+  }
+
+  .sd-hero h1 {
+    margin-top: 20px;
+    font-size: clamp(34px, 9.5vw, 52px);
+    line-height: 1.12;
+  }
+
+  .sd-lead {
+    font-size: 16px;
+    line-height: 26px;
+  }
+
+  .sd-btn {
+    height: 50px;
+    padding: 0 26px;
+    font-size: 15px;
+  }
+
+  .sd-hero-art {
+    margin-top: 32px;
+  }
+
+  .sd-capabilities {
+    padding-top: 48px;
+  }
+
+  .sd-head,
+  .sd-head.is-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .sd-head h2,
+  .sd-industries .sd-head h2 {
+    font-size: clamp(30px, 8vw, 40px);
+    line-height: 1.15;
+  }
+
+  .sd-head-text,
+  .sd-problems .sd-head-text {
+    flex: none;
+    margin-top: 0;
+    font-size: 16px;
+    line-height: 26px;
+  }
+
+  .sd-more {
+    margin-bottom: 0;
+  }
+
+  .sd-cards,
+  .sd-problems .sd-cards {
+    gap: 14px;
+    margin-top: 36px;
+  }
+
+  .sd-problems {
+    min-height: 0;
+    margin-top: 56px;
+    padding: 48px 0 56px;
+  }
+
+  .sd-industries {
+    padding: 56px 0 64px;
+  }
+
+  .sd-industry-grid {
+    margin-top: 28px;
+  }
+}
+
+@media (max-width: 520px) {
+  .sd-cards,
+  .sd-industry-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sd-card {
+    min-height: 0;
+  }
+}

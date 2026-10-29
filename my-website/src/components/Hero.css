@@ -1,0 +1,407 @@
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+  gap: 40px;
+  align-items: center;
+  padding: 8px 4vw 93px 5vw;
+}
+
+.hero h1 {
+  font-size: clamp(58px, 5.4vw, 84px);
+  line-height: 0.92;
+  letter-spacing: -2.5px;
+  font-weight: 800;
+  color: #161616;
+}
+
+.hero h1 .hero-accent {
+  color: #f5a000;
+  font-weight: 800;
+}
+
+.hero-description {
+  max-width: 440px;
+  margin-top: 22px;
+  font-size: 16px;
+  line-height: 1.55;
+  color: #5f5f5f;
+}
+
+.hero-buttons {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 28px;
+}
+
+.hero .primary-btn {
+  background: #f5a000;
+  color: #fff;
+  border: none;
+  gap: 10px;
+  padding: 14px 22px;
+  font-size: 15px;
+}
+
+.hero .primary-btn:hover {
+  background: #e09400;
+  transform: none;
+}
+
+.hero .secondary-btn {
+  background: transparent;
+  border: none;
+  color: #1a1a1a;
+  gap: 8px;
+  padding: 14px 16px;
+  font-size: 15px;
+}
+
+.hero .secondary-btn:hover {
+  background: transparent;
+  color: #111;
+}
+
+.hero-trust {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 36px;
+}
+
+.avatars {
+  display: flex;
+  flex: none;
+  align-items: center;
+}
+
+.avatars img {
+  flex: none;
+  width: 52px;
+  height: 52px;
+  margin-left: -14px;
+  border: 2px solid #a8dde3;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #c4651a;
+}
+
+.avatars img:first-child {
+  margin-left: 0;
+}
+
+.hero-trust p {
+  font-size: 15px;
+  color: #959fa5;
+  white-space: nowrap;
+}
+
+.hero-media {
+  display: flex;
+  align-items: stretch;
+  height: 460px;
+  gap: 6px;
+}
+
+.media-panel {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 72px;
+  height: 100%;
+  padding: 0;
+  border: 1px solid #e6e6e6;
+  overflow: hidden;
+  border-radius: 18px;
+  background: #e7eef2;
+  cursor: pointer;
+  transition: flex-grow 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.media-panel.is-active {
+  flex-grow: 2.7;
+}
+
+.media-panel video,
+.media-panel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  pointer-events: none;
+}
+
+.media-panel:nth-child(2) img {
+  object-position: 46% 40%;
+  transition: object-position 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.media-panel:nth-child(2).is-active img {
+  object-position: 28% 40%;
+}
+
+.media-panel:nth-child(3) img {
+  object-position: 58% 32%;
+}
+
+@media (max-width: 1000px) {
+  .hero {
+    grid-template-columns: 1fr;
+    padding: 24px 5vw 48px;
+  }
+
+  .hero-media {
+    height: 460px;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero h1 {
+    font-size: 44px;
+    letter-spacing: -1.2px;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hero-trust p {
+    white-space: normal;
+  }
+
+  .hero-media {
+    height: 280px;
+    gap: 4px;
+  }
+
+  .media-panel {
+    min-width: 46px;
+    border-radius: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .media-panel,
+  .media-panel img {
+    transition: none;
+  }
+}
+
+/* dotted backdrop from the design: soft grey dots on a 24px grid behind the
+   navbar, hero and client logos. It starts 200px above the hero so it also
+   fills the (transparent) navbar and the dots stay on one continuous grid. */
+.home-top {
+  position: relative;
+  isolation: isolate;
+}
+
+.home-top > * {
+  position: relative;
+  z-index: 1;
+}
+
+.home-top::before {
+  content: "";
+  position: absolute;
+  top: -200px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  background: radial-gradient(circle, #f4f4f4 2.4px, transparent 2.9px) 0 0 / 24px 24px;
+  pointer-events: none;
+}
+
+.app.is-home .navbar {
+  background: transparent;
+}
+
+@media (max-width: 600px) {
+  .hero-trust p {
+    min-width: 0;
+    white-space: normal;
+  }
+}
+
+/* ---- hero polish: soft glow, staggered entrance, richer hover, depth on the picture panels ---- */
+.hero {
+  position: relative;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  top: -40px;
+  left: -6%;
+  z-index: -1;
+  width: 46%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(245, 160, 0, 0.2), transparent 66%);
+  filter: blur(10px);
+  animation: hero-glow 10s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes hero-glow {
+  50% {
+    transform: translate(40px, 30px) scale(1.1);
+  }
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+
+.hero-description {
+  animation: hero-rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.9s both;
+}
+
+.hero-buttons {
+  animation: hero-rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) 1.05s both;
+}
+
+.hero-trust {
+  animation: hero-rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) 1.2s both;
+}
+
+.media-panel {
+  box-shadow: 0 24px 44px -26px rgba(19, 25, 39, 0.5);
+  animation: hero-panel 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transition: flex-grow 1.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease, border-color 0.4s ease;
+}
+
+.media-panel:nth-child(1) { animation-delay: 0.35s; }
+.media-panel:nth-child(2) { animation-delay: 0.5s; }
+.media-panel:nth-child(3) { animation-delay: 0.65s; }
+
+@keyframes hero-panel {
+  from {
+    opacity: 0;
+    transform: translateY(44px) scale(0.97);
+  }
+}
+
+.media-panel.is-active {
+  border-color: #f5a000;
+  box-shadow: 0 30px 56px -26px rgba(245, 160, 0, 0.55), 0 0 0 2px rgba(245, 160, 0, 0.22);
+}
+
+/* primary button: lifts, glows and its arrow slides; a light sweep runs across it */
+.hero .primary-btn {
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 14px 26px -12px rgba(245, 160, 0, 0.8);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.hero .primary-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 -60%;
+  width: 40%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  transform: skewX(-20deg);
+  animation: hero-sweep 4.5s ease-in-out 2s infinite;
+}
+
+@keyframes hero-sweep {
+  0%,
+  60%,
+  100% {
+    left: -60%;
+  }
+
+  80% {
+    left: 130%;
+  }
+}
+
+.hero .primary-btn:hover,
+.hero .primary-btn:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 34px -12px rgba(245, 160, 0, 0.95);
+}
+
+.hero .primary-btn span,
+.hero .secondary-btn span {
+  display: inline-block;
+  transition: transform 0.25s ease;
+}
+
+.hero .primary-btn:hover span,
+.hero .secondary-btn:hover span {
+  transform: translateX(5px);
+}
+
+.hero .secondary-btn {
+  position: relative;
+}
+
+.hero .secondary-btn::before {
+  content: "";
+  position: absolute;
+  left: 16px;
+  right: 40px;
+  bottom: 9px;
+  height: 2px;
+  border-radius: 2px;
+  background: #f5a000;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero .secondary-btn:hover::before {
+  transform: scaleX(1);
+}
+
+/* the faces fan out a little when the pointer is over them */
+.avatars img {
+  transition: margin-left 0.35s cubic-bezier(0.22, 1, 0.36, 1), transform 0.35s ease;
+}
+
+.avatars:hover img {
+  margin-left: -4px;
+}
+
+.avatars:hover img:first-child {
+  margin-left: 0;
+}
+
+.avatars img:hover {
+  transform: translateY(-4px) scale(1.06);
+}
+
+@media (max-width: 1000px) {
+  .hero::before {
+    left: -20%;
+    width: 80%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero::before,
+  .hero .primary-btn::after {
+    animation: none;
+  }
+
+  .hero-description,
+  .hero-buttons,
+  .hero-trust,
+  .media-panel {
+    animation: none;
+  }
+
+  .avatars img,
+  .hero .primary-btn,
+  .hero .primary-btn span,
+  .hero .secondary-btn span {
+    transition: none;
+  }
+}

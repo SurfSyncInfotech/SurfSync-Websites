@@ -1,0 +1,128 @@
+/* Finishing touches shared by every page. Nothing here changes content, pictures or layout:
+   only hover and focus feedback, a few small details and smoother motion. */
+
+/* keyboard focus is always visible, in the brand colour */
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible,
+[role="tab"]:focus-visible {
+  outline: 2px solid #f68713;
+  outline-offset: 3px;
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: rgba(246, 135, 19, 0.28);
+}
+
+/* the small coloured circles in the Products hero chips were plain grey placeholders */
+.prod-pills span i {
+  position: relative;
+  background: #fff1e4;
+}
+
+.prod-pills span i::after {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: 50%;
+  background: #f68713;
+}
+
+@media (hover: hover) {
+  /* cards lift a little and pick up a soft shadow when the pointer is over them */
+  .about-stats article,
+  .brand-card,
+  .faq-list article,
+  .cs-stats,
+  .cs-needs li,
+  .cs-quote,
+  .cs-proof-card,
+  .prod-cell,
+  .inside-row,
+  .sd-card,
+  .proj-feature,
+  .proj-mini,
+  .proj-health-card,
+  .proj-shot {
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease, border-color 0.3s ease;
+  }
+
+  .about-stats article:hover,
+  .brand-card:hover,
+  .prod-cell:hover,
+  .inside-row:hover,
+  .proj-mini:hover,
+  .proj-health-card:hover,
+  .proj-shot:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 22px 40px -22px rgba(19, 25, 39, 0.35);
+  }
+
+  .brand-card:hover {
+    border-color: #f6c28d;
+  }
+
+  .faq-list article:hover {
+    border-color: #2a9cb8;
+    box-shadow: 0 14px 28px -20px rgba(42, 156, 184, 0.7);
+  }
+
+  .proj-feature:hover {
+    box-shadow: 0 30px 56px -30px rgba(246, 135, 19, 0.45);
+  }
+
+  .cs-needs li:hover {
+    transform: translateX(4px);
+  }
+
+  /* arrows inside links nudge forward */
+  .proj-case span,
+  .about-btn span,
+  .cr-btn svg {
+    display: inline-block;
+    transition: transform 0.25s ease;
+  }
+
+  .proj-case:hover span,
+  .about-btn:hover span {
+    transform: translateX(4px);
+  }
+}
+
+/* long pages feel calmer with a slim, branded scrollbar */
+@media (hover: hover) and (min-width: 901px) {
+  html {
+    scrollbar-color: #f6b66a #f4f4f4;
+    scrollbar-width: thin;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-stats article,
+  .brand-card,
+  .faq-list article,
+  .prod-cell,
+  .inside-row,
+  .proj-mini,
+  .proj-health-card,
+  .proj-shot,
+  .proj-feature {
+    transition: none;
+  }
+
+  .about-stats article:hover,
+  .brand-card:hover,
+  .prod-cell:hover,
+  .inside-row:hover,
+  .proj-mini:hover,
+  .proj-health-card:hover,
+  .proj-shot:hover,
+  .cs-needs li:hover {
+    transform: none;
+  }
+}

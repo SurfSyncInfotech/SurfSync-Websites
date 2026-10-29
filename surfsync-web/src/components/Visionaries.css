@@ -1,0 +1,212 @@
+.visionaries {
+  padding: 72px 6vw;
+  background: #f7f1ea;
+}
+
+.vision-layout {
+  display: grid;
+  grid-template-columns: minmax(310px, 0.95fr) minmax(0, 0.9fr) minmax(300px, 1fr);
+  gap: 18px 0;
+  align-items: center;
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.vision-kicker {
+  margin-bottom: 16px;
+  color: #9aa3ad;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.visionaries h2 {
+  font-size: clamp(42px, 4.6vw, 64px);
+  line-height: 0.95;
+  letter-spacing: -1.8px;
+  font-weight: 800;
+  color: #1c1c1c;
+  white-space: nowrap;
+}
+
+.visionaries h2 span {
+  color: #f5a000;
+}
+
+.vision-lede {
+  max-width: 280px;
+  margin-top: 18px;
+  color: #3d4450;
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.vision-nav {
+  display: flex;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.vision-nav button {
+  width: 46px;
+  height: 46px;
+  border: 1px solid #ece7e1;
+  border-radius: 50%;
+  background: #fff;
+  color: #222;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(20, 30, 50, 0.06);
+}
+
+.vision-nav svg {
+  width: 18px;
+  height: 18px;
+}
+
+.vision-nav button.is-next {
+  border-color: #f5a000;
+  background: #f5a000;
+  color: #fff;
+}
+
+.vision-nav button:hover {
+  transform: translateY(-1px);
+}
+
+.vision-meter {
+  display: flex;
+  gap: 8px;
+  width: 132px;
+  margin-top: 22px;
+}
+
+.vision-meter span {
+  height: 4px;
+  flex: 1;
+  border-radius: 4px;
+  background: #e4e7ee;
+}
+
+.vision-meter span.is-on {
+  flex: 0.7;
+  background: #f5a000;
+}
+
+.vision-portrait {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 440px);
+  margin: 0 -60px 0 auto;
+  background: transparent;
+}
+
+.vision-portrait img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  background: transparent;
+}
+
+/* a regular photo (not a cut-out) gets soft rounded corners */
+.vision-portrait.is-photo img {
+  border-radius: 28px;
+  box-shadow: 0 18px 40px rgba(60, 40, 20, 0.12);
+}
+
+.vision-bubble {
+  position: relative;
+  z-index: 1;
+  padding: 54px 40px 32px 92px;
+  background: #fff;
+  border-radius: 40% 60% 48% 52% / 36% 44% 56% 64%;
+}
+
+.vision-mark {
+  display: block;
+  color: #f5a000;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 0.5;
+}
+
+.vision-bubble p {
+  margin-top: 16px;
+  color: #5c6570;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.vision-rule {
+  display: block;
+  width: 36px;
+  height: 3px;
+  margin: 18px 0 14px;
+  border-radius: 3px;
+  background: #f5a000;
+}
+
+.vision-person {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.vision-person img {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 18%;
+}
+
+.vision-person strong {
+  display: block;
+  color: #1c1c1c;
+  font-size: 15px;
+}
+
+.vision-person span {
+  color: #8b939c;
+  font-size: 13px;
+}
+
+@media (max-width: 900px) {
+  .visionaries h2 {
+    white-space: normal;
+  }
+
+  .visionaries {
+    padding: 56px 5vw;
+  }
+
+  .vision-layout {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .vision-copy,
+  .vision-bubble {
+    width: 100%;
+  }
+
+  .vision-portrait {
+    width: min(100%, 320px);
+    margin: 0 auto;
+  }
+
+  .vision-bubble {
+    padding: 40px 28px 28px;
+    border-radius: 32px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vision-nav button:hover {
+    transform: none;
+  }
+}

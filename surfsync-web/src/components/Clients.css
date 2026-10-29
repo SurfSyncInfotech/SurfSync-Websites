@@ -1,0 +1,52 @@
+.clients {
+  padding: 130px 6vw;
+}
+
+.section-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  font-weight: 700;
+  margin-bottom: 70px;
+}
+
+.client-content {
+  display: grid;
+  grid-template-columns: 1.4fr 0.6fr;
+  gap: 10vw;
+}
+
+.client-content h2 {
+  font-size: clamp(55px, 7vw, 105px);
+  line-height: 0.9;
+  letter-spacing: -5px;
+}
+
+.client-content h2 span {
+  font-weight: 400;
+}
+
+.client-content p {
+  max-width: 400px;
+  font-size: 17px;
+  line-height: 1.7;
+  color: #5f5b55;
+  align-self: end;
+}
+
+@media (max-width: 900px) {
+  .client-content {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+}
+
+@media (max-width: 600px) {
+  .clients {
+    padding: 90px 5vw;
+  }
+
+  .client-content h2 {
+    font-size: 60px;
+    letter-spacing: -4px;
+  }
+}

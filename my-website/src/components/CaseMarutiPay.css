@@ -1,0 +1,39 @@
+/* MarutiPay Portal case study: differences from the Modern Auto Parts layout (1440px design) */
+
+/* devices: x 115-1249, 124px under the key-features band */
+.is-maruti-case .cs-devices {
+  width: 78.75%;
+  margin: 124px 0 0 7.99%;
+}
+
+/* product panels: icons 10px left of the copy, on an 80px pitch */
+@media (min-width: 901px) {
+  .is-maruti-case .cs-roles {
+    margin-left: -10px;
+  }
+}
+
+@media (max-width: 900px) {
+  .is-maruti-case .cs-devices {
+    width: calc(100% - 40px);
+    margin: 40px auto 0;
+  }
+}
+
+/* laptop: the crop starts 7px above the lid, 839px wide (x 591-1430) */
+@media (min-width: 901px) {
+  .is-maruti-case .cs-product-art {
+    margin-top: 96px;
+  }
+
+  .is-maruti-case .cs-product-art img {
+    max-width: 839px;
+  }
+}
+
+/* step 1 copy wraps at ~228px, as in the design */
+@media (min-width: 901px) {
+  .is-maruti-case .cs-step.is-1 span {
+    max-width: 232px;
+  }
+}

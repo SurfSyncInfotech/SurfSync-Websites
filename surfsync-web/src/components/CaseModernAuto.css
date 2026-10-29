@@ -1,0 +1,53 @@
+/* Modern Auto Parts case study: differences from the Infocus layout (1440px design) */
+
+/* title on one line */
+@media (min-width: 901px) {
+  .is-modauto .cs-hero h1 {
+    white-space: nowrap;
+  }
+}
+
+/* bulb: 18 x 24 in the design */
+.is-modauto .cs-quote img {
+  width: 20px;
+}
+
+/* devices: x 116-1249, 131px under the key-features band */
+.is-modauto .cs-devices {
+  width: 78.6%;
+  margin: 133px 0 0 8.07%;
+}
+
+@media (max-width: 900px) {
+  .is-modauto .cs-devices {
+    width: calc(100% - 40px);
+    margin: 40px auto 0;
+  }
+}
+
+/* progress bars under the arrows: 43 x 6, 10px apart */
+.cs-proof-dashes {
+  display: flex;
+  gap: 10px;
+  margin-top: 43px;
+}
+
+.cs-proof-dashes button {
+  width: 43px;
+  height: 6px;
+  padding: 0;
+  border: 0;
+  border-radius: 3px;
+  background: #e8ebee;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.cs-proof-dashes button.is-on {
+  background: #f68713;
+}
+
+/* testimonial: kicker 164px under the tools band */
+.is-modauto .cs-proof {
+  padding-top: 160px;
+}

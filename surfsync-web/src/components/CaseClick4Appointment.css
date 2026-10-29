@@ -1,0 +1,182 @@
+/* Click4Appointment case study: differences from the Foodies layout (same 1440px design grid) */
+
+/* hero art: laptop + two phones, x 606-1346 of the design (722px wide, native 2886px source) */
+@media (min-width: 901px) {
+  .is-click4-case .cs-hero {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 722px);
+  }
+
+  .is-click4-case .cs-hero-art {
+    max-width: 722px;
+    aspect-ratio: 2886 / 1961;
+    margin-right: -25px;
+    margin-bottom: -13px;
+  }
+}
+
+@media (min-width: 901px) {
+  .is-click4-case .cs-hero {
+    padding-top: 72px;
+  }
+
+  .is-click4-case .cs-hero-art {
+    position: relative;
+    top: 6px;
+  }
+
+  .is-click4-case .cs-stats {
+    gap: 62px;
+    margin-top: 17px;
+    padding-bottom: 58px;
+  }
+
+  .is-click4-case .cs-stats span {
+    max-width: none;
+    white-space: pre;
+  }
+}
+
+/* needs box: 151px tall; single-line items sit 10px lower than the two-line ones */
+@media (min-width: 901px) {
+  .is-click4-case .cs-needs {
+    margin-top: 66px;
+    position: relative;
+    left: -20px;
+    padding: 47px 28px 14px;
+  }
+
+  .is-click4-case .cs-needs li {
+    align-items: flex-start;
+  }
+
+  .is-click4-case .cs-needs img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .is-click4-case .cs-needs li > div {
+    margin-top: -16px;
+  }
+
+  .is-click4-case .cs-needs li:nth-child(odd) {
+    margin-top: 10px;
+  }
+
+  .is-click4-case .cs-needs span {
+    max-width: 175px;
+  }
+}
+
+.is-click4-case .cs-process .cs-body {
+  letter-spacing: 0;
+}
+
+.is-click4-case .cs-step.is-2 span {
+  max-width: 275px;
+}
+
+/* product: monitor + Mac Studio crop starts at x 600; panels sit 30px lower than the Foodies layout */
+@media (min-width: 901px) {
+  .is-click4-case .cs-product-art {
+    margin-top: -76px;
+    margin-left: -43px;
+  }
+
+  .is-click4-case .cs-product {
+    overflow: hidden;
+  }
+
+  .is-click4-case .cs-product-art img {
+    width: 804px;
+    max-width: none;
+  }
+
+  .is-click4-case .cs-roles {
+    gap: 22px;
+    margin-top: 51px;
+  }
+
+  .is-click4-case .cs-roles li:nth-child(2) {
+    margin-bottom: 0;
+  }
+
+  .is-click4-case .cs-roles strong {
+    max-width: none;
+  }
+
+  .is-click4-case .cs-product .cs-body {
+    max-width: 520px;
+  }
+}
+
+@media (min-width: 901px) {
+  .is-click4-case .cs-product {
+    padding-bottom: 41px;
+  }
+
+  .is-click4-case .cs-script {
+    top: 438px;
+    left: -83px;
+    z-index: 1;
+  }
+}
+
+/* devices: 1270px crop, x 60-1330 of the design */
+.is-click4-case .cs-devices {
+  width: 88.19%;
+  margin: 42px 0 0 4.17%;
+}
+
+@media (max-width: 900px) {
+  .is-click4-case .cs-devices {
+    width: calc(100% - 40px);
+    margin: 40px auto 0;
+  }
+}
+
+@media (min-width: 901px) {
+  .is-click4-case .cs-tools {
+    margin-top: 106px;
+  }
+}
+
+
+.is-click4-case .cs-hero-art img {
+  display: block;
+  width: 100%;
+}
+
+.is-click4-case .cs-hero .cs-body {
+  max-width: 440px;
+}
+
+@media (min-width: 901px) {
+  .is-click4-case .cs-process {
+    margin-top: -53px;
+  }
+}
+
+/* phones: the long title must wrap inside the screen, and the hero stacks in one column */
+@media (max-width: 900px) {
+  .is-click4-case .cs-hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .is-click4-case .cs-hero-copy {
+    min-width: 0;
+  }
+
+  .is-click4-case .cs-hero h1 {
+    font-size: clamp(26px, 8.4vw, 44px);
+    overflow-wrap: anywhere;
+  }
+
+  .is-click4-case .cs-hero-art {
+    max-width: 100%;
+    margin: 10px auto 0;
+  }
+
+  .is-click4-case .cs-stats span {
+    white-space: normal;
+  }
+}

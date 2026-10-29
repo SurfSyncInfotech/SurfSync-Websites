@@ -1,0 +1,147 @@
+/* Vilvah Store case study: differences from the Foodies layout (same 1440px design grid) */
+
+/* hero art: laptop + two phones, x 646-1368 of the design (722px wide, native 2886px source) */
+@media (min-width: 901px) {
+  .is-vilvah-case .cs-hero {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 722px);
+  }
+
+  .is-vilvah-case .cs-hero-art {
+    max-width: 722px;
+    aspect-ratio: 2886 / 1961;
+    margin-right: -28px;
+  }
+}
+
+@media (min-width: 901px) {
+  .is-vilvah-case .cs-hero-art {
+    position: relative;
+    top: 27px;
+  }
+
+  .is-vilvah-case .cs-stats {
+    gap: 62px;
+    margin-top: 17px;
+    padding-bottom: 38px;
+  }
+}
+
+/* needs box: 151px tall; single-line items sit 10px lower than the two-line ones */
+@media (min-width: 901px) {
+  .is-vilvah-case .cs-needs {
+    margin-top: 53px;
+    position: relative;
+    left: -20px;
+    padding: 47px 28px 14px;
+  }
+
+  .is-vilvah-case .cs-needs li {
+    align-items: flex-start;
+  }
+
+  .is-vilvah-case .cs-needs img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .is-vilvah-case .cs-needs li > div {
+    margin-top: 9px;
+  }
+
+  .is-vilvah-case .cs-needs li:nth-child(odd) {
+    margin-top: 10px;
+  }
+
+  .is-vilvah-case .cs-needs span {
+    max-width: 175px;
+  }
+}
+
+.is-vilvah-case .cs-process .cs-body {
+  letter-spacing: 0;
+}
+
+.is-vilvah-case .cs-step.is-2 span {
+  max-width: 275px;
+}
+
+/* product: monitor + Mac Studio crop starts at x 600; panels sit 30px lower than the Foodies layout */
+@media (min-width: 901px) {
+  .is-vilvah-case .cs-product-art {
+    margin-top: -59px;
+    margin-left: -29px;
+  }
+
+  .is-vilvah-case .cs-product {
+    overflow: hidden;
+  }
+
+  .is-vilvah-case .cs-product-art img {
+    width: 815px;
+    max-width: none;
+  }
+
+  .is-vilvah-case .cs-roles {
+    gap: 22px;
+    margin-top: 51px;
+  }
+
+  .is-vilvah-case .cs-roles li:nth-child(2) {
+    margin-bottom: 0;
+  }
+
+  .is-vilvah-case .cs-roles strong {
+    max-width: none;
+  }
+
+  .is-vilvah-case .cs-product .cs-body {
+    max-width: 520px;
+  }
+}
+
+@media (min-width: 901px) {
+  .is-vilvah-case .cs-product {
+    padding-bottom: 54px;
+  }
+
+  .is-vilvah-case .cs-script {
+    top: 438px;
+    left: -83px;
+    z-index: 1;
+  }
+}
+
+/* devices: 1290px crop, x 40-1330 of the design */
+.is-vilvah-case .cs-devices {
+  width: 89.58%;
+  margin: 59px 0 0 2.78%;
+}
+
+@media (max-width: 900px) {
+  .is-vilvah-case .cs-devices {
+    width: calc(100% - 40px);
+    margin: 40px auto 0;
+  }
+}
+
+@media (min-width: 901px) {
+  .is-vilvah-case .cs-tools {
+    margin-top: 112px;
+  }
+}
+
+
+.is-vilvah-case .cs-hero-art img {
+  display: block;
+  width: 100%;
+}
+
+.is-vilvah-case .cs-hero .cs-body {
+  max-width: 440px;
+}
+
+@media (min-width: 901px) {
+  .is-vilvah-case .cs-process {
+    margin-top: -53px;
+  }
+}

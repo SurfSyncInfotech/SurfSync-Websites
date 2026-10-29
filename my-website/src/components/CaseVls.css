@@ -1,0 +1,167 @@
+/* VLS Wellness case study: differences from the shared case-study layout (1440px design) */
+
+/* art box spans x 638-1386 of the design */
+.is-vls .cs-hero {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 748px);
+  gap: 0;
+}
+
+.is-vls .cs-hero-art {
+  max-width: 748px;
+  aspect-ratio: 748 / 547;
+  margin-right: -46px;
+}
+
+.is-vls .cs-hero-art img {
+  width: 100%;
+}
+
+.is-vls .cs-hero .cs-body {
+  max-width: 430px;
+}
+
+/* copy block sits 28px above the art's centre line */
+.is-vls .cs-hero-copy {
+  margin-bottom: 56px;
+}
+
+.is-vls .cs-stats {
+  margin-top: 8px;
+}
+
+.is-vls .cs-stats span {
+  white-space: pre-line;
+}
+
+/* quote card: x 826-1272, level with the kicker */
+.is-vls .cs-idea-head {
+  grid-template-columns: minmax(0, 1fr) 514px;
+}
+
+.is-vls .cs-quote {
+  margin-top: 21px;
+}
+
+.is-vls .cs-needs {
+  margin-top: 61px;
+}
+
+.is-vls .cs-process {
+  padding-top: 178px;
+}
+
+.is-vls .cs-product {
+  margin-top: 87px;
+}
+
+.is-vls .cs-product h2 {
+  font-size: clamp(34px, 3.75vw, 54px);
+  line-height: 1;
+}
+
+.is-vls .cs-roles {
+  margin-top: 37px;
+}
+
+.is-vls .cs-roles span {
+  max-width: none;
+}
+
+/* iMac: x 616-1386, starting 15px under the top of the light band */
+.is-vls .cs-product-art {
+  margin: -48px -46px 0 -38px;
+}
+
+.is-vls .cs-product-art img {
+  max-width: 770px;
+}
+
+.is-vls .cs-script {
+  top: 430px;
+  left: -79px;
+}
+
+/* devices: x 80-1320, 57px under the key-features band */
+.is-vls .cs-devices {
+  width: 86.1%;
+  margin: 57px 0 0 5.56%;
+}
+
+.is-vls .cs-tools {
+  margin-top: 108px;
+}
+
+@media (max-width: 1100px) {
+  .is-vls .cs-idea-head {
+    grid-template-columns: 1fr;
+  }
+
+  .is-vls .cs-quote {
+    margin-top: 0;
+  }
+
+  .is-vls .cs-product-art {
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 900px) {
+  .is-vls .cs-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .is-vls .cs-hero-art {
+    margin: 10px auto 0;
+  }
+
+  .is-vls .cs-product-art {
+    margin: 64px 0 0;
+  }
+
+  .is-vls .cs-script {
+    top: -60px;
+    right: 18px;
+    left: auto;
+  }
+
+  .is-vls .cs-devices {
+    width: calc(100% - 40px);
+    margin: 40px auto 0;
+  }
+
+  .is-vls .cs-tools {
+    margin-top: 72px;
+  }
+
+  .is-vls .cs-hero-copy {
+    margin-bottom: 0;
+  }
+
+  .is-vls .cs-stats {
+    margin-top: 20px;
+  }
+
+  .is-vls .cs-process {
+    padding-top: 76px;
+  }
+
+  .is-vls .cs-product {
+    margin-top: 80px;
+  }
+}
+
+@media (min-width: 901px) {
+  .is-vls .cs-hero h1 {
+    font-size: clamp(40px, 3.9vw, 56px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+
+  .is-vls .cs-product {
+    padding-bottom: 15px;
+  }
+
+  .is-vls .cs-features {
+    padding-top: 92px;
+  }
+}

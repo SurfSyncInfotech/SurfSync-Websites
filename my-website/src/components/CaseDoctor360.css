@@ -1,0 +1,37 @@
+/* Doctor 360 case study: differences from the Modern Auto Parts layout (1440px design) */
+
+/* devices: x 115-1249, 124px under the key-features band */
+.is-doctor-case .cs-devices {
+  width: 78.75%;
+  margin: 124px 0 0 7.99%;
+}
+
+/* laptop: the crop starts 7px above the lid, 839px wide (x 591-1430) */
+@media (min-width: 901px) {
+  .is-doctor-case .cs-product-art {
+    margin-top: 96px;
+  }
+
+  .is-doctor-case .cs-product-art img {
+    max-width: 839px;
+  }
+}
+
+@media (max-width: 900px) {
+  .is-doctor-case .cs-devices {
+    width: calc(100% - 40px);
+    margin: 40px auto 0;
+  }
+}
+
+/* product panels: icons at y 2637 on a 104px pitch; light band 734px tall */
+@media (min-width: 901px) {
+  .is-doctor-case .cs-roles {
+    gap: 23px;
+    margin-top: 63px;
+  }
+
+  .is-doctor-case .cs-product {
+    padding-bottom: 79px;
+  }
+}

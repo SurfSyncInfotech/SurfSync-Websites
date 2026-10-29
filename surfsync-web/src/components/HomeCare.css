@@ -1,0 +1,21 @@
+.home-care {
+  width: min(1120px, calc(100% - 8vw));
+  margin: 0 auto;
+  padding: 72px 0 80px;
+}
+
+@media (max-width: 900px) {
+  .home-care .proj-feature.is-health {
+    min-height: 0;
+    padding: 28px 22px 24px;
+  }
+
+  .home-care .proj-feature.is-health .proj-feature-art {
+    position: relative;
+    top: auto;
+    right: auto;
+    width: min(100%, 520px);
+    margin: 22px auto 8px;
+    transform: none;
+  }
+}

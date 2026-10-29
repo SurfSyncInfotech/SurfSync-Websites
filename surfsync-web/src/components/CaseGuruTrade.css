@@ -1,0 +1,148 @@
+/* GuruTrade7 case study: differences from the Foodies layout (same 1440px design grid) */
+
+/* hero art: laptop + two phones, x 606-1346 of the design (741px wide, native 2886px source) */
+@media (min-width: 901px) {
+  .is-gurutrade-case .cs-hero {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 741px);
+  }
+
+  .is-gurutrade-case .cs-hero-art {
+    max-width: 741px;
+    aspect-ratio: 2886 / 1961;
+    margin-right: -7px;
+    margin-bottom: -13px;
+  }
+}
+
+@media (min-width: 901px) {
+  .is-gurutrade-case .cs-hero-art {
+    position: relative;
+    top: -16px;
+  }
+
+  .is-gurutrade-case .cs-stats {
+    gap: 62px;
+    margin-top: 17px;
+    padding-bottom: 38px;
+  }
+}
+
+/* needs box: 151px tall; single-line items sit 10px lower than the two-line ones */
+@media (min-width: 901px) {
+  .is-gurutrade-case .cs-needs {
+    margin-top: 66px;
+    position: relative;
+    left: -20px;
+    padding: 47px 28px 14px;
+  }
+
+  .is-gurutrade-case .cs-needs li {
+    align-items: flex-start;
+  }
+
+  .is-gurutrade-case .cs-needs img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .is-gurutrade-case .cs-needs li > div {
+    margin-top: -16px;
+  }
+
+  .is-gurutrade-case .cs-needs li:nth-child(odd) {
+    margin-top: 10px;
+  }
+
+  .is-gurutrade-case .cs-needs span {
+    max-width: 175px;
+  }
+}
+
+.is-gurutrade-case .cs-process .cs-body {
+  letter-spacing: 0;
+}
+
+.is-gurutrade-case .cs-step.is-2 span {
+  max-width: 275px;
+}
+
+/* product: monitor + Mac Studio crop starts at x 600; panels sit 30px lower than the Foodies layout */
+@media (min-width: 901px) {
+  .is-gurutrade-case .cs-product-art {
+    margin-top: -44px;
+    margin-left: -25px;
+  }
+
+  .is-gurutrade-case .cs-product {
+    overflow: hidden;
+  }
+
+  .is-gurutrade-case .cs-product-art img {
+    width: 815px;
+    max-width: none;
+  }
+
+  .is-gurutrade-case .cs-roles {
+    gap: 22px;
+    margin-top: 51px;
+  }
+
+  .is-gurutrade-case .cs-roles li:nth-child(2) {
+    margin-bottom: 0;
+  }
+
+  .is-gurutrade-case .cs-roles strong {
+    max-width: none;
+  }
+
+  .is-gurutrade-case .cs-product .cs-body {
+    max-width: 520px;
+  }
+}
+
+@media (min-width: 901px) {
+  .is-gurutrade-case .cs-product {
+    padding-bottom: 41px;
+  }
+
+  .is-gurutrade-case .cs-script {
+    top: 438px;
+    left: -83px;
+    z-index: 1;
+  }
+}
+
+/* devices: 1270px crop, x 60-1330 of the design */
+.is-gurutrade-case .cs-devices {
+  width: 88.19%;
+  margin: 50px 0 0 4.17%;
+}
+
+@media (max-width: 900px) {
+  .is-gurutrade-case .cs-devices {
+    width: calc(100% - 40px);
+    margin: 40px auto 0;
+  }
+}
+
+@media (min-width: 901px) {
+  .is-gurutrade-case .cs-tools {
+    margin-top: 106px;
+  }
+}
+
+
+.is-gurutrade-case .cs-hero-art img {
+  display: block;
+  width: 100%;
+}
+
+.is-gurutrade-case .cs-hero .cs-body {
+  max-width: 440px;
+}
+
+@media (min-width: 901px) {
+  .is-gurutrade-case .cs-process {
+    margin-top: -53px;
+  }
+}

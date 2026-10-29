@@ -1,0 +1,173 @@
+/* D.D. Bullions case study: differences from the Foodies layout (same 1440px design grid) */
+
+/* hero art: laptop + two phones, x 623-1417 of the design (794px wide, native 1494px source) */
+@media (min-width: 901px) {
+  .is-bullion-case .cs-hero {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 794px);
+  }
+
+  .is-bullion-case .cs-hero-art {
+    max-width: 794px;
+    aspect-ratio: 1494 / 977;
+    margin-right: -87px;
+  }
+}
+
+@media (min-width: 901px) {
+  .is-bullion-case .cs-hero-art {
+    position: relative;
+    top: 28px;
+  }
+
+  .is-bullion-case .cs-stats {
+    margin-top: 63px;
+    padding-bottom: 52px;
+  }
+}
+
+/* needs box: 151px tall; single-line items sit 10px lower than the two-line ones */
+@media (min-width: 901px) {
+  .is-bullion-case .cs-needs {
+    padding: 47px 28px 12px;
+  }
+
+  .is-bullion-case .cs-needs li {
+    align-items: flex-start;
+  }
+
+  .is-bullion-case .cs-needs img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .is-bullion-case .cs-needs li > div {
+    margin-top: 9px;
+  }
+
+  .is-bullion-case .cs-needs li:nth-child(odd) {
+    margin-top: 10px;
+  }
+
+  .is-bullion-case .cs-needs span {
+    max-width: 175px;
+  }
+}
+
+.is-bullion-case .cs-process .cs-body {
+  letter-spacing: 0;
+}
+
+.is-bullion-case .cs-step.is-2 span {
+  max-width: 275px;
+}
+
+/* product: monitor + Mac Studio crop starts at x 600; panels sit 30px lower than the Foodies layout */
+@media (min-width: 901px) {
+  .is-bullion-case .cs-product-art {
+    margin-top: -59px;
+    margin-left: -54px;
+  }
+
+  .is-bullion-case .cs-product {
+    overflow: hidden;
+  }
+
+  .is-bullion-case .cs-product-stage {
+    width: 840px;
+    max-width: none;
+  }
+
+  .is-bullion-case .cs-roles {
+    gap: 25px;
+    margin-top: 60px;
+  }
+
+  .is-bullion-case .cs-roles li:nth-child(2) {
+    margin-bottom: 0;
+  }
+
+  .is-bullion-case .cs-roles strong {
+    max-width: 235px;
+  }
+}
+
+@media (min-width: 901px) {
+  .is-bullion-case .cs-product {
+    padding-bottom: 54px;
+  }
+
+  .is-bullion-case .cs-script {
+    top: 420px;
+    left: -61px;
+    z-index: 1;
+  }
+}
+
+/* devices: 1240 x 531 box, x 80-1320 / y 4414-4945 of the design */
+.is-bullion-case .cs-devices {
+  width: 86.11%;
+  margin: 81px 0 0 5.56%;
+  aspect-ratio: 1240 / 531;
+}
+
+@media (max-width: 900px) {
+  .is-bullion-case .cs-devices {
+    width: calc(100% - 40px);
+    margin: 40px auto 0;
+  }
+}
+
+@media (min-width: 901px) {
+  .is-bullion-case .cs-tools {
+    margin-top: 142px;
+  }
+}
+
+.is-bullion-case .cs-hero-art img {
+  display: block;
+  width: 100%;
+}
+
+.is-bullion-case .cs-hero-art .cs-hero-screen {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+}
+
+/* picture + vector screen stacked in one box; both layers scale together */
+.is-bullion-case .cs-layered {
+  position: relative;
+}
+
+.is-bullion-case .cs-layered img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+}
+
+.is-bullion-case .cs-product-stage {
+  aspect-ratio: 840 / 675;
+}
+
+.is-bullion-case .cs-band-stage {
+  aspect-ratio: 4 / 3;
+}
+
+/* Foodies' monitor + Mac Studio, cropped to the left 61% and scaled to the Bullions monitor */
+.is-bullion-case .cs-devices-hardware {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 61.29%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.is-bullion-case .cs-devices-hardware img {
+  inset: 2.43% auto auto 1.63%;
+  width: 159.2%;
+  height: auto;
+}
