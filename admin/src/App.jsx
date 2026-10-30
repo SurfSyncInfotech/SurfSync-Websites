@@ -7,6 +7,7 @@ import Faqs from "./sections/Faqs";
 import Inquiries from "./sections/Inquiries";
 import Jobs from "./sections/Jobs";
 import Pricing from "./sections/Pricing";
+import Projects from "./sections/Projects";
 import Queries from "./sections/Queries";
 import { Avatar, ConfirmDialog, Toasts, useScrollLock } from "./ui";
 import { withinDays } from "./utils";
@@ -15,7 +16,7 @@ import surfsyncLogo from "./assets/surfsync_logo.png";
 const SITE_URL = import.meta.env.VITE_SITE_URL || "https://surfsyncinfotech.in/#careers";
 
 export const ROLE_PERMISSIONS = {
-  manager: ["jobs", "faqs", "pricing", "blogs", "inquiries", "applications"],
+  manager: ["jobs", "faqs", "pricing", "blogs", "inquiries", "applications", "projects"],
   hr: ["jobs", "faqs", "blogs", "applications"],
 };
 
@@ -26,6 +27,7 @@ const SECTIONS = [
   { id: "blogs", label: "Blogs", icon: "newspaper", search: "Search blog titles, descriptions, authors…" },
   { id: "inquiries", label: "Project Inquiries", icon: "mail", search: "Search client name, email, phone, service…" },
   { id: "applications", label: "Job Applications", icon: "users", search: "Search applicants, emails, roles…" },
+  { id: "projects", label: "Projects", icon: "grid", search: "Search projects, categories, tags…" },
 ];
 
 function readHash(role = "manager") {
@@ -256,6 +258,7 @@ function Dashboard({ email, role = "manager", onLogout }) {
   const packages = useResource(isManager ? "/api/admin/packages" : null, onLogout);
   const blogs = useResource(isManager ? "/api/admin/blogs" : null, onLogout);
   const inquiries = useResource(isManager ? "/api/admin/inquiries" : null, onLogout);
+  const projects = useResource(isManager ? "/api/admin/projects" : null, onLogout);
 
   useScrollLock(navOpen);
 
@@ -327,6 +330,7 @@ function Dashboard({ email, role = "manager", onLogout }) {
     inquiries: inquiries.rows.length,
     applications: applications.rows.length,
     queries: applications.rows.length,
+    projects: projects.rows.length,
   };
   const freshInquiries = isManager ? inquiries.rows.filter((row) => withinDays(row.createdAt, 1)).length : 0;
   const freshApplications = applications.rows.filter((row) => withinDays(row.createdAt, 1)).length;
@@ -441,6 +445,7 @@ function Dashboard({ email, role = "manager", onLogout }) {
           {section === "blogs" && isAllowed("blogs") ? <Blogs blogs={blogs} {...shared} /> : null}
           {section === "inquiries" && isAllowed("inquiries") ? <Inquiries inquiries={inquiries} {...shared} /> : null}
           {(section === "applications" || section === "queries") && isAllowed("applications") ? <Queries applications={applications} {...shared} /> : null}
+          {section === "projects" && isAllowed("projects") ? <Projects projects={projects} {...shared} /> : null}
         </main>
       </div>
 

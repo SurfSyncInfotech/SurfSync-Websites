@@ -28,6 +28,7 @@ import statCountries from "../assets/proj-stat-countries.png";
 import clientStories from "./clientStories";
 import ameerBrown from "../assets/case-modern-auto/client.jpg";
 import ProjectReel from "./ProjectReel";
+import { DynamicCards, useDynamicProjects } from "./DynamicProjects";
 import "./Projects.css";
 
 const filters = [
@@ -36,7 +37,7 @@ const filters = [
   "FinTech",
   "Food",
   "E-commerce",
-  "Automobile",
+  "Others",
 ];
 
 /* flat 760 × 1200 project posters; the wheel below tilts, sizes and spins them */
@@ -137,7 +138,7 @@ const projects = [
   {
     id: "projects-modern-auto",
     title: "Modern Auto Parts",
-    group: "Automobile",
+    group: "Others",
     layout: "shot",
   },
   {
@@ -173,6 +174,19 @@ function filterFromHash(hash) {
 
 function Projects() {
   const [tab, setTab] = useState(() => filterFromHash(window.location.hash));
+  /* projects added from the admin panel, shown after the built-in ones in their category */
+  const added = useDynamicProjects();
+  const addedIn = (group) => <DynamicCards category={group} projects={added.filter((p) => p.category === group)} />;
+
+  useEffect(() => {
+    if (!added.length) return;
+    const id = window.location.hash.replace("#", "");
+    const match = added.find((p) => `projects-${p.slug}` === id);
+    if (match) {
+      setTab(match.category);
+      window.requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ behavior: "instant" }));
+    }
+  }, [added]);
 
   useEffect(() => {
     const sync = () => setTab(filterFromHash(window.location.hash));
@@ -196,7 +210,7 @@ function Projects() {
     });
     window.addEventListener("resize", fit);
     return () => window.removeEventListener("resize", fit);
-  }, [tab]);
+  }, [tab, added]);
 
   const infocusCards = (
     <>
@@ -633,25 +647,45 @@ function Projects() {
             {infocusCards}
             <h3 className="proj-group">Healthcare</h3>
             {healthCards}
+            {addedIn("Healthcare")}
             <h3 className="proj-group">Food</h3>
             {foodCards}
+            {addedIn("Food")}
             <h3 className="proj-group">E-commerce</h3>
             {ecommerceCards}
-            <h3 className="proj-group">Automobile</h3>
+            {addedIn("E-commerce")}
+            <h3 className="proj-group">Others</h3>
             {autoCards}
+            {addedIn("Others")}
             <h3 className="proj-group">FinTech</h3>
             {fintechCards}
+            {addedIn("FinTech")}
           </>
         ) : tab === "E-commerce" ? (
-          ecommerceCards
+          <>
+            {ecommerceCards}
+            {addedIn("E-commerce")}
+          </>
         ) : tab === "Food" ? (
-          foodCards
+          <>
+            {foodCards}
+            {addedIn("Food")}
+          </>
         ) : tab === "Healthcare" ? (
-          healthCards
-        ) : tab === "Automobile" ? (
-          autoCards
+          <>
+            {healthCards}
+            {addedIn("Healthcare")}
+          </>
+        ) : tab === "Others" ? (
+          <>
+            {autoCards}
+            {addedIn("Others")}
+          </>
         ) : (
-          fintechCards
+          <>
+            {fintechCards}
+            {addedIn("FinTech")}
+          </>
         )}
       </section>
 

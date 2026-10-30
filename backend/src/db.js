@@ -360,6 +360,40 @@ export function mapBlog(row) {
   };
 }
 
+export function mapProject(row) {
+  return {
+    id: row.id,
+    title: row.title,
+    slug: row.slug,
+    category: row.category,
+    tags: parseJson(row.tags_json),
+    shortDescription: row.short_description,
+    cardImage: row.card_image,
+    cardStyle: row.card_style || "feature",
+    cardNote: row.card_note || "",
+    region: row.region || "both",
+    isPublished: Boolean(row.is_published),
+    sortOrder: row.sort_order || 0,
+    hasCaseStudy: Boolean(row.has_case_study),
+    caseStudy: parseObject(row.case_json),
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
+
+function parseObject(value) {
+  if (value && typeof value === "object" && !Array.isArray(value)) return value;
+  if (typeof value === "string") {
+    try {
+      const parsed = JSON.parse(value);
+      return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
+    } catch {
+      return {};
+    }
+  }
+  return {};
+}
+
 function parseJson(value) {
   if (Array.isArray(value)) return value;
   if (typeof value === "string") {
@@ -506,6 +540,28 @@ export async function initDatabase() {
       INDEX idx_blogs_slug (slug),
       INDEX idx_blogs_published (is_published, sort_order),
       INDEX idx_blogs_region (region, is_published, sort_order)
+    )
+  `);
+
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS projects (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      title VARCHAR(160) NOT NULL,
+      slug VARCHAR(180) NOT NULL UNIQUE,
+      category VARCHAR(40) NOT NULL,
+      tags_json JSON NOT NULL,
+      short_description TEXT NOT NULL,
+      card_image VARCHAR(500) NOT NULL,
+      card_style VARCHAR(20) NOT NULL DEFAULT 'feature',
+      card_note VARCHAR(160) NOT NULL DEFAULT '',
+      region VARCHAR(20) NOT NULL DEFAULT 'both',
+      is_published TINYINT(1) NOT NULL DEFAULT 1,
+      sort_order INT NOT NULL DEFAULT 0,
+      has_case_study TINYINT(1) NOT NULL DEFAULT 0,
+      case_json LONGTEXT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      INDEX idx_projects_category (category, is_published, sort_order)
     )
   `);
 

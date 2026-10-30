@@ -3,7 +3,7 @@ import path from "path";
 import { Router } from "express";
 import multer from "multer";
 import { checkAdminLogin, requireAdmin, requireRole, signToken } from "./auth.js";
-import { getPool, jobMeta, mapApplication, mapBlog, mapFaq, mapInquiry, mapJob, mapPackage } from "./db.js";
+import { getPool, jobMeta, mapApplication, mapBlog, mapFaq, mapInquiry, mapJob, mapPackage, mapProject } from "./db.js";
 
 const ICONS = ["pencil", "code", "robot", "chart", "leaf", "route", "clipboard"];
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -161,6 +161,110 @@ function packageInput(body) {
   };
 }
 
+const PROJECT_CATEGORIES = ["Healthcare", "FinTech", "Food", "E-commerce", "Others"];
+
+const projectUploadDir = path.resolve("uploads", "projects");
+if (!fs.existsSync(projectUploadDir)) {
+  fs.mkdirSync(projectUploadDir, { recursive: true });
+}
+
+const projectImageUpload = multer({
+  storage: multer.diskStorage({
+    destination: (_req, _file, cb) => cb(null, projectUploadDir),
+    filename: (_req, file, cb) => {
+      const ext = path.extname(file.originalname).toLowerCase();
+      const cleanBase = path
+        .basename(file.originalname, ext)
+        .replace(/[^a-zA-Z0-9_-]/g, "_")
+        .slice(0, 50);
+      cb(null, `${Date.now()}-${cleanBase}${ext}`);
+    },
+  }),
+  limits: { fileSize: 20 * 1024 * 1024 },
+  fileFilter: (_req, file, cb) => {
+    const isImage = /image\/(jpeg|jpg|png|webp|gif|svg\+xml)/i.test(file.mimetype) || /\.(jpe?g|png|webp|gif|svg)$/i.test(file.originalname);
+    cb(isImage ? null : new Error("Please upload an image (JPG, PNG, WebP, SVG)."), isImage);
+  },
+});
+
+function pairs(value, max) {
+  if (!Array.isArray(value)) return [];
+  return value
+    .map((item) => ({ title: clean(item?.title, 120), text: clean(item?.text, 600) }))
+    .filter((item) => item.title || item.text)
+    .slice(0, max);
+}
+
+function caseInput(body) {
+  const c = body && typeof body === "object" ? body : {};
+  return {
+    subtitle: clean(c.subtitle, 200),
+    intro: clean(c.intro, 2000),
+    heroImage: clean(c.heroImage, 500),
+    tags: lines(c.tags).slice(0, 8),
+    stats: Array.isArray(c.stats)
+      ? c.stats
+          .map((item) => ({ value: clean(item?.value, 20), label: clean(item?.label, 80) }))
+          .filter((item) => item.value || item.label)
+          .slice(0, 4)
+      : [],
+    needLead: clean(c.needLead, 200),
+    needText: clean(c.needText, 2000),
+    quote: clean(c.quote, 300),
+    needs: pairs(c.needs, 4),
+    processText: clean(c.processText, 2000),
+    steps: pairs(c.steps, 3),
+    productTitle: clean(c.productTitle, 160),
+    productHighlight: clean(c.productHighlight, 160),
+    productText: clean(c.productText, 3000),
+    productImage: clean(c.productImage, 500),
+    roles: pairs(c.roles, 3),
+    featureImages: lines(c.featureImages).slice(0, 6),
+    tools: lines(c.tools).slice(0, 12),
+    liveUrl: clean(c.liveUrl, 500),
+  };
+}
+
+function projectInput(body) {
+  const title = clean(body.title, 160);
+  const slug = slugify(clean(body.slug, 180) || title);
+  const category = PROJECT_CATEGORIES.includes(body.category) ? body.category : "";
+  const tags = lines(body.tags).slice(0, 6);
+  const shortDescription = clean(body.shortDescription, 1000);
+  const cardImage = clean(body.cardImage, 500);
+  const cardStyle = body.cardStyle === "mini" ? "mini" : "feature";
+  const cardNote = clean(body.cardNote, 160);
+  const region = ["both", "domestic", "international"].includes(body.region) ? body.region : "both";
+  const isPublished = body.isPublished === false || body.isPublished === 0 || body.isPublished === "0" ? 0 : 1;
+  const sortOrder = Number.isFinite(Number(body.sortOrder)) ? Number(body.sortOrder) : 0;
+  const hasCaseStudy = body.hasCaseStudy === true || body.hasCaseStudy === 1 || body.hasCaseStudy === "1" ? 1 : 0;
+  const caseStudy = caseInput(body.caseStudy);
+
+  if (!category) return { error: "Choose a category." };
+  if (title.length < 2) return { error: "Enter the project name." };
+  if (!slug) return { error: "Enter a valid slug." };
+  if (!cardImage) return { error: "Upload the project card image." };
+  if (!shortDescription) return { error: "Enter a short card description." };
+  if (hasCaseStudy && !caseStudy.heroImage) return { error: "Upload the case study hero image." };
+  if (hasCaseStudy && !caseStudy.intro) return { error: "Enter the case study introduction." };
+
+  return {
+    value: { title, slug, category, tags, shortDescription, cardImage, cardStyle, cardNote, region, isPublished, sortOrder, hasCaseStudy, caseStudy },
+  };
+}
+
+async function uniqueProjectSlug(slug, id = 0) {
+  const [rows] = await getPool().query("SELECT id FROM projects WHERE slug = ? AND id != ?", [slug, id]);
+  return rows.length ? `${slug}-${Date.now().toString().slice(-4)}` : slug;
+}
+
+function projectFiles(row) {
+  const caseStudy = mapProject(row).caseStudy;
+  return [row.card_image, caseStudy.heroImage, caseStudy.productImage, ...(caseStudy.featureImages || [])].filter(
+    (url) => typeof url === "string" && url.startsWith("/uploads/projects/")
+  );
+}
+
 export function publicRouter() {
   const router = Router();
 
@@ -234,6 +338,36 @@ export function publicRouter() {
         [slug, region]
       );
       res.json(rows.map(mapPackage));
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  router.get("/projects", async (req, res, next) => {
+    try {
+      const region = clean(req.query.region, 20);
+      let query = "SELECT * FROM projects WHERE is_published = 1";
+      if (region === "domestic") query += " AND region IN ('domestic', 'both')";
+      else if (region === "international") query += " AND region IN ('international', 'both')";
+      query += " ORDER BY sort_order ASC, id ASC";
+      const [rows] = await getPool().query(query);
+      res.json(rows.map(mapProject));
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  router.get("/projects/:slug", async (req, res, next) => {
+    try {
+      const [rows] = await getPool().query(
+        "SELECT * FROM projects WHERE slug = ? AND is_published = 1 LIMIT 1",
+        [clean(req.params.slug, 180)]
+      );
+      if (!rows.length) {
+        res.status(404).json({ error: "Project not found." });
+        return;
+      }
+      res.json(mapProject(rows[0]));
     } catch (error) {
       next(error);
     }
@@ -857,6 +991,110 @@ export function adminRouter() {
           const filePath = path.resolve("uploads", "blogs", path.basename(m));
           await fs.promises.unlink(filePath).catch(() => {});
         }
+      }
+      res.json({ ok: true });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  // Projects (Featured work on the Projects page)
+  router.post("/projects/upload", requireRole("manager"), (req, res) => {
+    projectImageUpload.single("file")(req, res, (err) => {
+      if (err) {
+        const message = err.code === "LIMIT_FILE_SIZE" ? "That image is over 20 MB." : err.message;
+        res.status(400).json({ error: message || "Failed to upload image." });
+        return;
+      }
+      if (!req.file) {
+        res.status(400).json({ error: "No image provided." });
+        return;
+      }
+      res.json({ ok: true, url: `/uploads/projects/${req.file.filename}` });
+    });
+  });
+
+  router.get("/projects", requireRole("manager"), async (_req, res, next) => {
+    try {
+      const [rows] = await getPool().query("SELECT * FROM projects ORDER BY sort_order ASC, id ASC");
+      res.json(rows.map(mapProject));
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  router.post("/projects", requireRole("manager"), async (req, res, next) => {
+    try {
+      const parsed = projectInput(req.body || {});
+      if (parsed.error) {
+        res.status(400).json({ error: parsed.error });
+        return;
+      }
+      const p = parsed.value;
+      p.slug = await uniqueProjectSlug(p.slug);
+      const [result] = await getPool().query(
+        `INSERT INTO projects (title, slug, category, tags_json, short_description, card_image, card_style, card_note, region, is_published, sort_order, has_case_study, case_json)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [p.title, p.slug, p.category, JSON.stringify(p.tags), p.shortDescription, p.cardImage, p.cardStyle, p.cardNote, p.region, p.isPublished, p.sortOrder, p.hasCaseStudy, JSON.stringify(p.caseStudy)]
+      );
+      const [rows] = await getPool().query("SELECT * FROM projects WHERE id = ?", [result.insertId]);
+      res.status(201).json(mapProject(rows[0]));
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  router.put("/projects/:id", requireRole("manager"), async (req, res, next) => {
+    try {
+      const parsed = projectInput(req.body || {});
+      if (parsed.error) {
+        res.status(400).json({ error: parsed.error });
+        return;
+      }
+      const p = parsed.value;
+      p.slug = await uniqueProjectSlug(p.slug, req.params.id);
+      const [result] = await getPool().query(
+        `UPDATE projects
+         SET title = ?, slug = ?, category = ?, tags_json = ?, short_description = ?, card_image = ?, card_style = ?, card_note = ?, region = ?, is_published = ?, sort_order = ?, has_case_study = ?, case_json = ?
+         WHERE id = ?`,
+        [p.title, p.slug, p.category, JSON.stringify(p.tags), p.shortDescription, p.cardImage, p.cardStyle, p.cardNote, p.region, p.isPublished, p.sortOrder, p.hasCaseStudy, JSON.stringify(p.caseStudy), req.params.id]
+      );
+      if (!result.affectedRows) {
+        res.status(404).json({ error: "Project not found." });
+        return;
+      }
+      const [rows] = await getPool().query("SELECT * FROM projects WHERE id = ?", [req.params.id]);
+      res.json(mapProject(rows[0]));
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  router.patch("/projects/:id/publish", requireRole("manager"), async (req, res, next) => {
+    try {
+      const isPublished = req.body.isPublished ? 1 : 0;
+      const [result] = await getPool().query("UPDATE projects SET is_published = ? WHERE id = ?", [isPublished, req.params.id]);
+      if (!result.affectedRows) {
+        res.status(404).json({ error: "Project not found." });
+        return;
+      }
+      const [rows] = await getPool().query("SELECT * FROM projects WHERE id = ?", [req.params.id]);
+      res.json(mapProject(rows[0]));
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  router.delete("/projects/:id", requireRole("manager"), async (req, res, next) => {
+    try {
+      const [rows] = await getPool().query("SELECT * FROM projects WHERE id = ?", [req.params.id]);
+      if (!rows.length) {
+        res.status(404).json({ error: "Project not found." });
+        return;
+      }
+      await getPool().query("DELETE FROM projects WHERE id = ?", [req.params.id]);
+      for (const url of projectFiles(rows[0])) {
+        await fs.promises.unlink(path.resolve("uploads", "projects", path.basename(url))).catch(() => {});
       }
       res.json({ ok: true });
     } catch (error) {

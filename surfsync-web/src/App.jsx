@@ -55,6 +55,7 @@ const loaders = {
   CasePharmaTrack: () => import("./components/CasePharmaTrack"),
   BlogsPage: () => import("./components/BlogsPage"),
   BlogDetail: () => import("./components/BlogDetail"),
+  CaseDynamic: () => import("./components/CaseDynamic"),
 };
 const About = lazy(loaders.About);
 const Products = lazy(loaders.Products);
@@ -79,6 +80,7 @@ const CaseReetSutra = lazy(loaders.CaseReetSutra);
 const CasePharmaTrack = lazy(loaders.CasePharmaTrack);
 const BlogsPage = lazy(loaders.BlogsPage);
 const BlogDetail = lazy(loaders.BlogDetail);
+const CaseDynamic = lazy(loaders.CaseDynamic);
 
 const preloadPages = () => Object.values(loaders).forEach((load) => load());
 
@@ -111,6 +113,8 @@ function isContactHash(hash) {
 
 function nextPage(hash) {
   if (hash === "#careers") return "careers";
+  /* case studies of projects added in the admin panel */
+  if (hash.startsWith("#case-p-")) return `case-p:${hash.slice(8)}`;
   if (hash === "#case-atleast80") return "case-atleast80";
   if (hash === "#case-vakt") return "case-vakt";
   if (hash === "#case-vls") return "case-vls";
@@ -153,6 +157,8 @@ function renderPage(page) {
       <Contact />
     ) : page === "careers" ? (
       <Careers />
+    ) : page.startsWith("case-p:") ? (
+      <CaseDynamic key={page} slug={decodeURIComponent(page.slice(7))} />
     ) : page === "case-atleast80" ? (
       <CaseAtleast80 />
     ) : page === "case-vakt" ? (

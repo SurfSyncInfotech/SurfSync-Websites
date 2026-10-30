@@ -1,0 +1,69 @@
+/* case studies added from the admin panel: only what the shared case-study layout
+   (CaseStudy.css) cannot know in advance about uploaded content */
+.case-page.is-dynamic.cs-dyn-empty {
+  min-height: 60vh;
+  padding: 140px 0 80px;
+}
+
+/* like VAKT: one uploaded picture fills the hero's art box */
+.case-page.is-dynamic .cs-hero-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.case-page.is-dynamic .cs-hero-copy .cs-btn {
+  margin-top: 24px;
+}
+
+/* like VAKT: the bold line sits right above its paragraph */
+.case-page.is-dynamic .cs-lead + .cs-body {
+  margin-top: 4px;
+}
+
+.case-page.is-dynamic .cs-product-art img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* screens after the band and the devices picture */
+.cs-dyn-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-top: 64px;
+}
+
+.cs-dyn-gallery img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+/* a tool without a logo: the same white circle as the logo images, with its name */
+.cs-dyn-tool {
+  display: grid;
+  place-items: center;
+  width: 150px;
+  height: 150px;
+  padding: 16px;
+  border: 1px solid #dceff3;
+  border-radius: 50%;
+  background: #fff;
+  color: #0f4152;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 900px) {
+  .cs-dyn-tool {
+    width: 96px;
+    height: 96px;
+    padding: 10px;
+    font-size: 13px;
+  }
+}

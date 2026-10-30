@@ -187,6 +187,14 @@ const paths = {
       <circle cx="12" cy="10" r="2.4" />
     </>
   ),
+  grid: (
+    <>
+      <rect x="3.5" y="3.5" width="7" height="7" rx="1.6" />
+      <rect x="13.5" y="3.5" width="7" height="7" rx="1.6" />
+      <rect x="3.5" y="13.5" width="7" height="7" rx="1.6" />
+      <rect x="13.5" y="13.5" width="7" height="7" rx="1.6" />
+    </>
+  ),
 };
 
 export const ROLE_ICONS = ["pencil", "code", "robot", "chart", "leaf", "route", "clipboard"];
