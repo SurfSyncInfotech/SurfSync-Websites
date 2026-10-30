@@ -25,7 +25,6 @@ const services = [
 const products = [
   ["Swagat Suite", "#products-swagat"],
   ["HRMS", "#products-hrms"],
-  ["Sales CRM", "#products-crm"],
   ["PatronPing", "#products-patron"],
 ];
 
@@ -168,14 +167,14 @@ function Footer() {
       </div>
 
       <div className="footer-bar">
-        <p>© {new Date().getFullYear()} SurfSync Infotech Pvt. Ltd. All rights reserved.</p>
+        <p>© 2024 SurfSync Infotech Pvt. Ltd. All rights reserved.</p>
         <button type="button" className="footer-top" onClick={toTop} aria-label="Back to top">
           <span aria-hidden="true">↑</span> Back to top
         </button>
         <nav aria-label="Legal">
-          <a href="#contact">Privacy policy</a>
+          <a href="#privacy-policy">Privacy policy</a>
           <span aria-hidden="true">|</span>
-          <a href="#contact">Terms</a>
+          <a href="#terms-and-conditions">Terms &amp; conditions</a>
           <span aria-hidden="true">|</span>
           <a href="#contact">Sitemap</a>
         </nav>

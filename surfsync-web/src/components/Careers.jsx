@@ -91,7 +91,7 @@ const values = [
 ];
 
 const emptyForm = { name: "", email: "", link: "", why: "" };
-const apiUrl = import.meta.env.VITE_API_URL || "http://127.0.0.1:4000";
+const apiUrl = import.meta.env.VITE_API_URL;
 
 function Careers() {
   const [roles, setRoles] = useState([]);

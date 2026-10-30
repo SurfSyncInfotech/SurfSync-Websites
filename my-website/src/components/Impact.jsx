@@ -143,8 +143,8 @@ function Impact() {
           <a href="#about" className="impact-primary">
             About Surfsync <span>→</span>
           </a>
-          <a href="#contact" className="impact-secondary">
-            Watch out story <span>→</span>
+          <a href="#about" className="impact-secondary">
+            Watch our story <span>→</span>
           </a>
         </div>
         <div className="impact-stats">

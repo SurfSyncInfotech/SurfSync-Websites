@@ -36,7 +36,7 @@ const filters = [
   "FinTech",
   "Food",
   "E-commerce",
-  "Automobile",
+  "Others",
 ];
 
 /* flat 760 × 1200 project posters; the wheel below tilts, sizes and spins them */
@@ -137,7 +137,7 @@ const projects = [
   {
     id: "projects-modern-auto",
     title: "Modern Auto Parts",
-    group: "Automobile",
+    group: "Others",
     layout: "shot",
   },
   {
@@ -637,7 +637,7 @@ function Projects() {
             {foodCards}
             <h3 className="proj-group">E-commerce</h3>
             {ecommerceCards}
-            <h3 className="proj-group">Automobile</h3>
+            <h3 className="proj-group">Others</h3>
             {autoCards}
             <h3 className="proj-group">FinTech</h3>
             {fintechCards}
@@ -648,7 +648,7 @@ function Projects() {
           foodCards
         ) : tab === "Healthcare" ? (
           healthCards
-        ) : tab === "Automobile" ? (
+        ) : tab === "Others" ? (
           autoCards
         ) : (
           fintechCards

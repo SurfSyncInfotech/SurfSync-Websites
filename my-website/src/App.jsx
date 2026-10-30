@@ -9,6 +9,8 @@ import OurProcess from "./components/OurProcess";
 import Industries from "./components/Industries";
 import Visionaries from "./components/Visionaries";
 import Faq from "./components/Faq";
+import LandingPage from "./components/LandingPage";
+import ThankYouPage from "./components/ThankYouPage";
 import serviceDetails from "./components/serviceDetails";
 import Footer from "./components/Footer";
 /* case study styles load up front, in this order, because later pages override earlier ones */
@@ -50,6 +52,8 @@ const loaders = {
   CaseNaturalAyurved: () => import("./components/CaseNaturalAyurved"),
   CaseDDBullions: () => import("./components/CaseDDBullions"),
   Careers: () => import("./components/Careers"),
+  Academy: () => import("./components/Academy"),
+  Legal: () => import("./components/Legal"),
   CaseGuruTrade: () => import("./components/CaseGuruTrade"),
   CaseReetSutra: () => import("./components/CaseReetSutra"),
   CasePharmaTrack: () => import("./components/CasePharmaTrack"),
@@ -74,6 +78,8 @@ const CaseFoodies = lazy(loaders.CaseFoodies);
 const CaseNaturalAyurved = lazy(loaders.CaseNaturalAyurved);
 const CaseDDBullions = lazy(loaders.CaseDDBullions);
 const Careers = lazy(loaders.Careers);
+const Academy = lazy(loaders.Academy);
+const Legal = lazy(loaders.Legal);
 const CaseGuruTrade = lazy(loaders.CaseGuruTrade);
 const CaseReetSutra = lazy(loaders.CaseReetSutra);
 const CasePharmaTrack = lazy(loaders.CasePharmaTrack);
@@ -111,6 +117,9 @@ function isContactHash(hash) {
 
 function nextPage(hash) {
   if (hash === "#careers") return "careers";
+  if (hash === "#academy") return "academy";
+  if (hash === "#privacy-policy") return "privacy";
+  if (hash === "#terms-and-conditions") return "terms";
   if (hash === "#case-atleast80") return "case-atleast80";
   if (hash === "#case-vakt") return "case-vakt";
   if (hash === "#case-vls") return "case-vls";
@@ -137,9 +146,20 @@ function nextPage(hash) {
   return "home";
 }
 
+function resolvePage(pathname, hash) {
+  const cleanPath = pathname.replace(/\/+$/, "") || "/";
+  if (["/enquries/thank-you", "/enquiries/thank-you"].includes(cleanPath)) return "thank-you";
+  if (["/enquries", "/enquiries"].includes(cleanPath)) return "enquiries";
+  return nextPage(hash);
+}
+
 function renderPage(page) {
   return (
-    page === "about" ? (
+    page === "enquiries" ? (
+      <LandingPage />
+    ) : page === "thank-you" ? (
+      <ThankYouPage />
+    ) : page === "about" ? (
       <About />
     ) : page === "products" ? (
       <Products />
@@ -153,6 +173,10 @@ function renderPage(page) {
       <Contact />
     ) : page === "careers" ? (
       <Careers />
+    ) : page === "academy" ? (
+      <Academy />
+    ) : page === "privacy" || page === "terms" ? (
+      <Legal key={page} kind={page} />
     ) : page === "case-atleast80" ? (
       <CaseAtleast80 />
     ) : page === "case-vakt" ? (
@@ -255,7 +279,7 @@ function CaseGate({ children, onHold }) {
 
 function App() {
   const [hash, setHash] = useState(() => window.location.hash);
-  const [page, setPage] = useState(() => nextPage(window.location.hash));
+  const [page, setPage] = useState(() => resolvePage(window.location.pathname, window.location.hash));
   // true while a page is still on its way; the footer waits so it never shows first
   const [busy, setBusy] = useState(false);
 
@@ -298,9 +322,9 @@ function App() {
     const onHash = () => {
       const next = window.location.hash;
       // leave the old page's scroll position behind straight away
-      if (nextPage(next) !== "home") window.scrollTo({ top: 0, behavior: "instant" });
+      if (resolvePage(window.location.pathname, next) !== "home") window.scrollTo({ top: 0, behavior: "instant" });
       setHash(next);
-      setPage(nextPage(next));
+      setPage(resolvePage(window.location.pathname, next));
     };
 
     window.addEventListener("hashchange", onHash);
@@ -315,8 +339,11 @@ function App() {
       hash === "#products" ||
       hash === "#projects" ||
       hash === "#work" ||
-      hash === "#contact" ||
+      (hash === "#contact" && page !== "enquiries") ||
       hash === "#careers" ||
+      hash === "#academy" ||
+      hash === "#privacy-policy" ||
+      hash === "#terms-and-conditions" ||
       hash === "#services" ||
       hash === "#blogs" ||
       hash.startsWith("#blog-") ||
@@ -333,13 +360,13 @@ function App() {
 
   return (
     <div className={`app${page === "home" ? " is-home" : ""}`}>
-      <Navbar />
+      {page !== "enquiries" && page !== "thank-you" && <Navbar />}
       <main>
         <Suspense fallback={<Holding onHold={setBusy} />}>
           {page.startsWith("case-") ? <CaseGate key={page} onHold={setBusy}>{renderPage(page)}</CaseGate> : renderPage(page)}
         </Suspense>
       </main>
-      {!busy && <Footer />}
+      {page !== "enquiries" && page !== "thank-you" && !busy && <Footer />}
     </div>
   );
 }

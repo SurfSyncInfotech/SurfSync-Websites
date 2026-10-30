@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./BlogDetail.css";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://127.0.0.1:4000";
+const API_BASE = import.meta.env.VITE_API_URL;
 
 function formatDate(dateString) {
   if (!dateString) return "May 13, 2026";

@@ -9,22 +9,38 @@ const mapsQuery =
 const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapsQuery)}`;
 const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(mapsQuery)}`;
 
-const services = ["AI & Automation", "Web Development", "Mobile Apps", "Cloud & DevOps"];
-const apiUrl = import.meta.env.VITE_API_URL || "http://127.0.0.1:4000";
+const services = ["Website Development", "App Development"];
+const websiteTypes = [
+  "Business Website",
+  "E-commerce Website",
+  "Landing Page",
+  "Custom Web Application",
+  "Redesign Existing Website",
+];
+const appTypes = [
+  "Android App",
+  "iOS App",
+  "Android and iOS App",
+  "Web App",
+  "MVP / I have an app idea",
+  "Improve My Existing App",
+];
+const budgets = [
+  "Under ₹25,000",
+  "₹25,000–₹50,000",
+  "₹50,000–₹1,00,000",
+  "₹1,00,000–₹3,00,000",
+  "₹3,00,000+",
+];
+const timelines = ["Immediately", "Within 2–4 weeks", "Within 1–3 months", "Just exploring options"];
+const existingWebsiteOptions = [
+  "Yes, I need improvements",
+  "No, I want to build from scratch",
+  "I have an idea and need guidance",
+];
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const facts = [
-  {
-    icon: "phone",
-    title: "Call Us",
-    lines: ["+91 94296 94356", "Mon - Fri, 9:00 AM - 6:30 PM"],
-    href: "tel:+919429694356",
-  },
-  {
-    icon: "mail",
-    title: "Email US",
-    lines: ["info@surfsyncinfotech.in", "Usually respond within 24 hrs"],
-    href: "mailto:info@surfsyncinfotech.in",
-  },
   {
     icon: "pin",
     title: "Our Office",
@@ -44,6 +60,11 @@ const empty = {
   code: "+91",
   phone: "",
   service: "",
+  websiteType: "",
+  appType: "",
+  budget: "",
+  timeline: "",
+  existingWebsite: "",
   message: "",
 };
 
@@ -79,17 +100,15 @@ function FactIcon({ name }) {
   );
 }
 
-const mailTo = "info@surfsyncinfotech.in";
-
 /* what is wrong with a field, or "" when it is fine */
 function problem(name, value) {
   const text = value.trim();
   if (name === "name") return text.length < 2 ? "Please enter your full name." : "";
   if (name === "email") return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(text) ? "" : "Please enter a valid email address.";
   if (name === "phone") return /^\d{7,12}$/.test(text.replace(/[\s-]/g, "")) ? "" : "Please enter a valid phone number.";
-  if (name === "service") return text ? "" : "Please choose a service.";
+  if (name === "service") return services.includes(text) ? "" : "Please choose a service.";
   if (name === "message") return text.length < 10 ? "Please tell us a little more (at least 10 characters)." : "";
-  return "";
+  return text ? "" : "This field is required.";
 }
 
 const MAX_MESSAGE = 1000;
@@ -136,7 +155,8 @@ function useReveal() {
   return [ref, shown ? " is-in" : ""];
 }
 
-function Contact() {
+function Contact({ compact = false }) {
+  const ContactHeading = compact ? "h2" : "h1";
   const [stepsRef, stepsIn] = useReveal();
   const [officeRef, officeIn] = useReveal();
   const [fields, setFields] = useState(empty);
@@ -144,7 +164,6 @@ function Contact() {
   const [mapZoom, setMapZoom] = useState(1);
   // which fields have been left, so errors only show once someone has had a go at them
   const [touched, setTouched] = useState({});
-  const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
@@ -177,7 +196,22 @@ function Contact() {
   const submit = async (event) => {
     event.preventDefault();
     if (submitting) return;
-    const names = ["name", "email", "phone", "service", "message"];
+    const typeField = fields.service === "Website Development"
+      ? "websiteType"
+      : fields.service === "App Development"
+        ? "appType"
+        : null;
+    const names = [
+      "name",
+      "email",
+      "phone",
+      "service",
+      ...(typeField ? [typeField] : []),
+      "budget",
+      "timeline",
+      "existingWebsite",
+      "message",
+    ];
     if (names.some((name) => problem(name, fields[name]))) {
       setTouched(Object.fromEntries(names.map((name) => [name, true])));
       const first = names.find((name) => problem(name, fields[name]));
@@ -189,6 +223,14 @@ function Contact() {
     setSubmitError("");
 
     try {
+      const projectType = typeField ? fields[typeField] : "";
+      const message = [
+        `Project type: ${projectType}`,
+        `Estimated project budget: ${fields.budget}`,
+        `Planned start: ${fields.timeline}`,
+        `Existing website: ${fields.existingWebsite}`,
+        `Project requirements: ${fields.message.trim()}`,
+      ].join("\n");
       const response = await fetch(`${apiUrl}/api/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -198,7 +240,12 @@ function Contact() {
           code: fields.code,
           phone: fields.phone.trim(),
           service: fields.service,
-          message: fields.message.trim(),
+          projectType: fields[typeField],
+          budget: fields.budget,
+          timeline: fields.timeline,
+          existingWebsite: fields.existingWebsite,
+          requirements: fields.message.trim(),
+          message,
         }),
       });
 
@@ -207,19 +254,12 @@ function Contact() {
         throw new Error(data.error || "Could not submit your message. Please try again.");
       }
 
-      setSent(true);
+      window.location.assign("/enquries/thank-you");
     } catch (err) {
       setSubmitError(err.message || "Could not connect to the server. Please try again.");
     } finally {
       setSubmitting(false);
     }
-  };
-
-  const reset = () => {
-    setFields(empty);
-    setTouched({});
-    setSubmitError("");
-    setSent(false);
   };
 
   return (
@@ -228,11 +268,11 @@ function Contact() {
         <div className="contact-build-inner">
           <div className="contact-copy">
             <p className="contact-kicker">Send us a message</p>
-            <h1>
+            <ContactHeading>
               <StaggeredText text="Let's Build Something" stagger={0.03} />
               <br />
               <StaggeredText className="contact-accent" text="Great Together" delay={0.5} stagger={0.03} />
-            </h1>
+            </ContactHeading>
             <p className="contact-lead">
               Share a few details about your project and our team will get back to you with the best
               possible solution.
@@ -276,46 +316,16 @@ function Contact() {
               })}
           </ul>
 
-          {sent ? (
-            <div className="contact-form contact-sent" role="status">
-              <span className="contact-sent-mark" aria-hidden="true">
-                <svg viewBox="0 0 24 24">
-                  <path d="m5 12.5 4.5 4.5L19 7.5" />
-                </svg>
-              </span>
-              <h2>Thank you, {fields.name.trim().split(" ")[0]}!</h2>
-              <p>
-                We've received your project requirements. Our team will review them and get back to you within 24 hours.
-              </p>
-              <p className="contact-sent-alt">
-                Need urgent assistance? Reach us directly at <a href={`mailto:${mailTo}`}>{mailTo}</a> or call{" "}
-                <a href="tel:+919429694356">+91 94296 94356</a>.
-              </p>
-              <button type="button" onClick={reset}>
-                Send another message
-              </button>
-            </div>
-          ) : (
-            <form className="contact-form" onSubmit={submit} noValidate>
+          <form className="contact-form" onSubmit={submit} noValidate>
               <label>
                 Your Name *
-                <input {...fieldProps("name")} placeholder="eg. John Doe" autoComplete="name" />
+                <input {...fieldProps("name")} placeholder="eg. John Doe" autoComplete="name" required />
                 {note("name")}
-              </label>
-              <label>
-                Email *
-                <input
-                  {...fieldProps("email")}
-                  type="email"
-                  placeholder="john@company.com"
-                  autoComplete="email"
-                />
-                {note("email")}
               </label>
               <label>
                 Phone Number *
                 <span className={`phone-field${errorFor("phone") ? " is-invalid" : ""}`}>
-                  <select name="code" value={fields.code} onChange={update} aria-label="Country code">
+                  <select name="code" value={fields.code} onChange={update} aria-label="Country code" required>
                     <option value="+91">+91</option>
                   </select>
                   <input
@@ -324,29 +334,76 @@ function Contact() {
                     inputMode="tel"
                     placeholder="9429694356"
                     autoComplete="tel-national"
+                    required
                   />
                 </span>
                 {note("phone")}
               </label>
               <label>
-                Services *
-                <select {...fieldProps("service")}>
-                  <option value="">Select service</option>
-                  {services.map((service) => (
-                    <option key={service} value={service}>
-                      {service}
-                    </option>
-                  ))}
+                Email *
+                <input
+                  {...fieldProps("email")}
+                  type="email"
+                  placeholder="john@company.com"
+                  autoComplete="email"
+                  required
+                />
+                {note("email")}
+              </label>
+              <label className="is-wide">
+                Service *
+                <select {...fieldProps("service")} required>
+                  <option value="">Select Website or App Development</option>
+                  {services.map((service) => <option key={service} value={service}>{service}</option>)}
                 </select>
                 {note("service")}
               </label>
+              {fields.service && (
+                <label className="is-wide">
+                  {fields.service === "Website Development"
+                    ? "What type of website are you looking to build? *"
+                    : "What type of app do you want to develop? *"}
+                  <select {...fieldProps(fields.service === "Website Development" ? "websiteType" : "appType")} required>
+                    <option value="">Choose an option</option>
+                    {(fields.service === "Website Development" ? websiteTypes : appTypes).map((type) => (
+                      <option key={type} value={type}>{type}</option>
+                    ))}
+                  </select>
+                  {note(fields.service === "Website Development" ? "websiteType" : "appType")}
+                </label>
+              )}
+              <label>
+                What is your estimated project budget? *
+                <select {...fieldProps("budget")} required>
+                  <option value="">Select a budget</option>
+                  {budgets.map((budget) => <option key={budget} value={budget}>{budget}</option>)}
+                </select>
+                {note("budget")}
+              </label>
+              <label>
+                When are you planning to start? *
+                <select {...fieldProps("timeline")} required>
+                  <option value="">Select a timeline</option>
+                  {timelines.map((timeline) => <option key={timeline} value={timeline}>{timeline}</option>)}
+                </select>
+                {note("timeline")}
+              </label>
               <label className="is-wide">
-                Tell us About your Project *
+                Do you already have a website? *
+                <select {...fieldProps("existingWebsite")} required>
+                  <option value="">Choose an option</option>
+                  {existingWebsiteOptions.map((option) => <option key={option} value={option}>{option}</option>)}
+                </select>
+                {note("existingWebsite")}
+              </label>
+              <label className="is-wide">
+                Briefly describe your project requirements. *
                 <textarea
                   {...fieldProps("message")}
                   rows="5"
                   maxLength={MAX_MESSAGE}
-                  placeholder="Share your requirements"
+                  placeholder="Tell us about your business, your idea, and the features you need."
+                  required
                 />
                 <span className="field-foot">
                   {note("message")}
@@ -372,12 +429,11 @@ function Contact() {
                   {submitting ? "Sending..." : "Send Message"} <span aria-hidden="true">→</span>
                 </button>
               </div>
-            </form>
-          )}
+          </form>
         </div>
       </section>
 
-      <section ref={stepsRef} className={`contact-steps${stepsIn}`} aria-label="What happens next">
+      {!compact && <section ref={stepsRef} className={`contact-steps${stepsIn}`} aria-label="What happens next">
         <p className="contact-kicker">What happens next</p>
         <h2>
           From hello to <span>kick-off</span> in three steps
@@ -391,9 +447,9 @@ function Contact() {
             </li>
           ))}
         </ol>
-      </section>
+      </section>}
 
-      <section ref={officeRef} className={`contact-office${officeIn}`} aria-label="Visit our office">
+      {!compact && <section ref={officeRef} className={`contact-office${officeIn}`} aria-label="Visit our office">
         <p className="contact-kicker">Our location</p>
         <h2>
           Visit Our <span>Office</span>
@@ -503,7 +559,7 @@ function Contact() {
             </div>
           </div>
         </div>
-      </section>
+      </section>}
     </div>
   );
 }

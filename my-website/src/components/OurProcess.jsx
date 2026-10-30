@@ -30,8 +30,8 @@ function OurProcess() {
           <a className="our-process-primary" href="#about">
             About Surfsync <span aria-hidden="true">→</span>
           </a>
-          <a className="our-process-secondary" href="#contact">
-            Watch out story <span aria-hidden="true">→</span>
+          <a className="our-process-secondary" href="#about">
+            Watch our story <span aria-hidden="true">→</span>
           </a>
         </div>
       </div>

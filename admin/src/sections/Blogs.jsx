@@ -485,6 +485,50 @@ export default function Blogs({ blogs, search = "", notify, ask, onUnauthorized 
   );
 }
 
+
+function parseInitialSections(rawContent) {
+  if (!rawContent || !rawContent.trim()) {
+    return [{ id: "sec-1", type: "paragraph", text: "" }];
+  }
+  const trimmed = rawContent.trim();
+  if (trimmed.startsWith("[") && trimmed.endsWith("]")) {
+    try {
+      const parsed = JSON.parse(trimmed);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed.map((item, i) => ({
+          id: 'sec-' + Date.now() + '-' + i,
+          ...item,
+        }));
+      }
+    } catch {
+      // not JSON
+    }
+  }
+  return [{ id: "sec-1", type: "paragraph", text: rawContent }];
+}
+
+function serializeSections(sections) {
+  const clean = sections.map(({ type, text, imageUrl, caption, image1Url, caption1, image2Url, caption2 }) => {
+    if (type === "h2" || type === "h3" || type === "paragraph") {
+      return { type, text: text || "" };
+    }
+    if (type === "image_full") {
+      return { type, imageUrl: imageUrl || "", caption: caption || "" };
+    }
+    if (type === "image_grid2") {
+      return {
+        type,
+        image1Url: image1Url || "",
+        caption1: caption1 || "",
+        image2Url: image2Url || "",
+        caption2: caption2 || "",
+      };
+    }
+    return { type, text: text || "" };
+  });
+  return JSON.stringify(clean);
+}
+
 function BlogModal({ draft, onClose, onSaved, onUnauthorized }) {
   const isNew = !draft.id;
   const [region, setRegion] = useState(draft.region || "both");
@@ -495,6 +539,9 @@ function BlogModal({ draft, onClose, onSaved, onUnauthorized }) {
   const [videoUrl, setVideoUrl] = useState(draft.videoUrl || "");
   const [shortDescription, setShortDescription] = useState(draft.shortDescription || "");
   const [content, setContent] = useState(draft.content || "");
+  const [sections, setSections] = useState(() => parseInitialSections(draft.content || ""));
+  const [contentMode, setContentMode] = useState("sections");
+  const [uploadingSectionImg, setUploadingSectionImg] = useState("");
   const [author, setAuthor] = useState(draft.author || "SurfSync Team");
   const [isPublished, setIsPublished] = useState(Boolean(draft.isPublished));
   const [sortOrder, setSortOrder] = useState(draft.sortOrder || 1);
@@ -506,6 +553,61 @@ function BlogModal({ draft, onClose, onSaved, onUnauthorized }) {
 
   const imageInputRef = useRef(null);
   const videoInputRef = useRef(null);
+
+
+  const addSection = (type) => {
+    const newId = 'sec-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6);
+    if (type === "h2") {
+      setSections((prev) => [...prev, { id: newId, type: "h2", text: "" }]);
+    } else if (type === "h3") {
+      setSections((prev) => [...prev, { id: newId, type: "h3", text: "" }]);
+    } else if (type === "image_full") {
+      setSections((prev) => [...prev, { id: newId, type: "image_full", imageUrl: "", caption: "" }]);
+    } else if (type === "image_grid2") {
+      setSections((prev) => [
+        ...prev,
+        { id: newId, type: "image_grid2", image1Url: "", caption1: "", image2Url: "", caption2: "" },
+      ]);
+    } else {
+      setSections((prev) => [...prev, { id: newId, type: "paragraph", text: "" }]);
+    }
+  };
+
+  const updateSection = (id, field, value) => {
+    setSections((prev) =>
+      prev.map((s) => (s.id === id ? { ...s, [field]: value } : s))
+    );
+  };
+
+  const removeSection = (id) => {
+    setSections((prev) => (prev.length > 1 ? prev.filter((s) => s.id !== id) : [{ id: "sec-1", type: "paragraph", text: "" }]));
+  };
+
+  const moveSection = (idx, direction) => {
+    setSections((prev) => {
+      const next = [...prev];
+      const targetIdx = idx + direction;
+      if (targetIdx < 0 || targetIdx >= next.length) return prev;
+      const temp = next[idx];
+      next[idx] = next[targetIdx];
+      next[targetIdx] = temp;
+      return next;
+    });
+  };
+
+  const handleSectionImageUpload = async (secId, fieldKey, file) => {
+    if (!file) return;
+    setError("");
+    setUploadingSectionImg(secId + '-' + fieldKey);
+    try {
+      const url = await uploadFile(file);
+      updateSection(secId, fieldKey, url);
+    } catch (err) {
+      setError(err.message || "Failed to upload section image.");
+    } finally {
+      setUploadingSectionImg("");
+    }
+  };
 
   const handleTitleChange = (val) => {
     setTitle(val);
@@ -573,8 +675,9 @@ function BlogModal({ draft, onClose, onSaved, onUnauthorized }) {
       return;
     }
 
-    if (!content.trim()) {
-      setError("Please enter the full article description.");
+    const finalContent = contentMode === "sections" ? serializeSections(sections) : content.trim();
+    if (!finalContent) {
+      setError("Please enter the full article description or add at least one section.");
       return;
     }
 
@@ -586,7 +689,7 @@ function BlogModal({ draft, onClose, onSaved, onUnauthorized }) {
       imageUrl: imageUrl.trim(),
       videoUrl: videoUrl.trim(),
       shortDescription, // Preserves spaces and empty lines!
-      content, // Preserves spaces and empty lines!
+      content: finalContent,
       author: author.trim() || "SurfSync Team",
       region,
       isPublished,
@@ -912,30 +1015,344 @@ function BlogModal({ draft, onClose, onSaved, onUnauthorized }) {
           />
         </Field>
 
-        {/* Full Description / Content */}
-        <Field
-          label="Full Description / Article Body"
-          hint="Full article text. Line breaks, empty paragraph lines, and bullet spaces are preserved exactly as you type."
-        >
-          <textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            rows={10}
-            placeholder="Write or paste your full blog article here…&#10;&#10;Leave empty lines between paragraphs to separate them cleanly."
-            required
-            disabled={busy}
-            style={{
-              width: "100%",
-              padding: "12px 14px",
-              borderRadius: 8,
-              border: "1px solid var(--border)",
-              fontFamily: "inherit",
-              fontSize: 13.5,
-              lineHeight: 1.6,
-              whiteSpace: "pre-wrap",
-            }}
-          />
-        </Field>
+        {/* Full Description / Flexible Section Builder */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
+            <div>
+              <label style={{ fontSize: 13.5, fontWeight: 700, color: "var(--text-1, #0f172a)" }}>
+                Full Description / Article Body
+              </label>
+              <p style={{ margin: "2px 0 0", fontSize: 12, color: "var(--text-muted, #64748b)" }}>
+                Add headings, paragraphs, 1200px full-width images, and 600px+600px side-by-side cards.
+              </p>
+            </div>
+            <div style={{ display: "inline-flex", background: "#f1f5f9", padding: 3, borderRadius: 8, border: "1px solid #e2e8f0", gap: 4 }}>
+              <button
+                type="button"
+                onClick={() => setContentMode("sections")}
+                style={{
+                  padding: "4px 10px",
+                  fontSize: 12,
+                  fontWeight: 600,
+                  border: "none",
+                  borderRadius: 6,
+                  cursor: "pointer",
+                  background: contentMode === "sections" ? "#ea580c" : "transparent",
+                  color: contentMode === "sections" ? "#fff" : "#475569",
+                }}
+              >
+                Structured Sections
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  if (contentMode === "sections") {
+                    setContent(serializeSections(sections));
+                  }
+                  setContentMode("raw");
+                }}
+                style={{
+                  padding: "4px 10px",
+                  fontSize: 12,
+                  fontWeight: 600,
+                  border: "none",
+                  borderRadius: 6,
+                  cursor: "pointer",
+                  background: contentMode === "raw" ? "#ea580c" : "transparent",
+                  color: contentMode === "raw" ? "#fff" : "#475569",
+                }}
+              >
+                Raw Text
+              </button>
+            </div>
+          </div>
+
+          {contentMode === "raw" ? (
+            <textarea
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              rows={10}
+              placeholder="Write or paste your full blog article here…&#10;&#10;Leave empty lines between paragraphs to separate them cleanly."
+              disabled={busy}
+              style={{
+                width: "100%",
+                padding: "12px 14px",
+                borderRadius: 8,
+                border: "1px solid var(--border)",
+                fontFamily: "inherit",
+                fontSize: 13.5,
+                lineHeight: 1.6,
+                whiteSpace: "pre-wrap",
+              }}
+            />
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+              {/* Sections List */}
+              {sections.map((sec, idx) => (
+                <div
+                  key={sec.id}
+                  style={{
+                    background: "#ffffff",
+                    border: "1px solid #e2e8f0",
+                    borderRadius: 10,
+                    padding: "14px 16px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 10,
+                    boxShadow: "0 1px 3px rgba(0,0,0,0.03)",
+                  }}
+                >
+                  {/* Section Header Controls */}
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #f1f5f9", paddingBottom: 8 }}>
+                    <span style={{ fontSize: 12, fontWeight: 700, color: "#ea580c", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                      {sec.type === "h2" && "H2 Heading"}
+                      {sec.type === "h3" && "H3 Subheading"}
+                      {sec.type === "paragraph" && "Text Paragraph"}
+                      {sec.type === "image_full" && "Full-Width Image (1200px Ratio)"}
+                      {sec.type === "image_grid2" && "Two Images Side-by-Side (600px + 600px)"}
+                    </span>
+
+                    <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                      <button
+                        type="button"
+                        disabled={idx === 0}
+                        onClick={() => moveSection(idx, -1)}
+                        style={{ border: "none", background: "#f1f5f9", borderRadius: 4, padding: "2px 6px", cursor: idx === 0 ? "default" : "pointer", opacity: idx === 0 ? 0.3 : 1, fontSize: 11 }}
+                        title="Move Up"
+                      >
+                        ▲
+                      </button>
+                      <button
+                        type="button"
+                        disabled={idx === sections.length - 1}
+                        onClick={() => moveSection(idx, 1)}
+                        style={{ border: "none", background: "#f1f5f9", borderRadius: 4, padding: "2px 6px", cursor: idx === sections.length - 1 ? "default" : "pointer", opacity: idx === sections.length - 1 ? 0.3 : 1, fontSize: 11 }}
+                        title="Move Down"
+                      >
+                        ▼
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => removeSection(sec.id)}
+                        style={{ border: "none", background: "#fee2e2", color: "#dc2626", borderRadius: 4, padding: "2px 8px", cursor: "pointer", fontSize: 11, fontWeight: 600 }}
+                        title="Delete Section"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Section Inputs based on type */}
+                  {sec.type === "h2" && (
+                    <input
+                      type="text"
+                      value={sec.text || ""}
+                      onChange={(e) => updateSection(sec.id, "text", e.target.value)}
+                      placeholder="e.g. 1. Dedicated Architecture Tailored to Business Goals"
+                      style={{ fontSize: 15, fontWeight: 700, padding: "8px 12px", borderRadius: 6, border: "1px solid #cbd5e1" }}
+                    />
+                  )}
+
+                  {sec.type === "h3" && (
+                    <input
+                      type="text"
+                      value={sec.text || ""}
+                      onChange={(e) => updateSection(sec.id, "text", e.target.value)}
+                      placeholder="e.g. Key Performance Metrics in 2026"
+                      style={{ fontSize: 14, fontWeight: 600, padding: "8px 12px", borderRadius: 6, border: "1px solid #cbd5e1" }}
+                    />
+                  )}
+
+                  {sec.type === "paragraph" && (
+                    <textarea
+                      rows={4}
+                      value={sec.text || ""}
+                      onChange={(e) => updateSection(sec.id, "text", e.target.value)}
+                      placeholder="Write paragraph content here. Line breaks are preserved."
+                      style={{ width: "100%", padding: "10px 12px", borderRadius: 6, border: "1px solid #cbd5e1", fontSize: 13.5, lineHeight: 1.6, whiteSpace: "pre-wrap" }}
+                    />
+                  )}
+
+                  {sec.type === "image_full" && (
+                    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                      {sec.imageUrl ? (
+                        <div style={{ position: "relative", borderRadius: 8, overflow: "hidden", border: "1px solid #e2e8f0", background: "#0f172a", maxHeight: 180 }}>
+                          <img src={resolveMediaUrl(sec.imageUrl)} alt="Preview" style={{ width: "100%", height: 160, objectFit: "cover" }} />
+                          <button
+                            type="button"
+                            onClick={() => updateSection(sec.id, "imageUrl", "")}
+                            style={{ position: "absolute", top: 8, right: 8, background: "rgba(0,0,0,0.75)", color: "#fff", border: "none", borderRadius: 4, padding: "3px 8px", fontSize: 11, cursor: "pointer" }}
+                          >
+                            Change Image
+                          </button>
+                        </div>
+                      ) : (
+                        <label style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", border: "2px dashed #cbd5e1", borderRadius: 8, padding: "18px 12px", cursor: "pointer", background: "#f8fafc" }}>
+                          <span style={{ fontSize: 13, fontWeight: 600, color: "#334155" }}>
+                            {uploadingSectionImg === `${sec.id}-imageUrl` ? "Uploading full-width image…" : "Click to upload 1200px Full-Width Image"}
+                          </span>
+                          <span style={{ fontSize: 11.5, color: "#64748b" }}>Recommended: 1200×675 (16:9) PNG, JPG, WebP</span>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            style={{ display: "none" }}
+                            onChange={(e) => {
+                              const f = e.target.files?.[0];
+                              if (f) handleSectionImageUpload(sec.id, "imageUrl", f);
+                            }}
+                          />
+                        </label>
+                      )}
+                      <input
+                        type="text"
+                        value={sec.caption || ""}
+                        onChange={(e) => updateSection(sec.id, "caption", e.target.value)}
+                        placeholder="Image caption or subtitle (optional)"
+                        style={{ fontSize: 12.5, padding: "6px 10px", borderRadius: 6, border: "1px solid #cbd5e1" }}
+                      />
+                    </div>
+                  )}
+
+                  {sec.type === "image_grid2" && (
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                      {/* Image 1 (600px) */}
+                      <div style={{ display: "flex", flexDirection: "column", gap: 6, border: "1px solid #f1f5f9", padding: 8, borderRadius: 6, background: "#fafafa" }}>
+                        <span style={{ fontSize: 11.5, fontWeight: 700, color: "#475569" }}>Card 1 (Left - 600px Ratio)</span>
+                        {sec.image1Url ? (
+                          <div style={{ position: "relative", borderRadius: 6, overflow: "hidden", height: 120, background: "#0f172a" }}>
+                            <img src={resolveMediaUrl(sec.image1Url)} alt="Preview 1" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                            <button
+                              type="button"
+                              onClick={() => updateSection(sec.id, "image1Url", "")}
+                              style={{ position: "absolute", top: 6, right: 6, background: "rgba(0,0,0,0.75)", color: "#fff", border: "none", borderRadius: 4, padding: "2px 6px", fontSize: 10, cursor: "pointer" }}
+                            >
+                              Change
+                            </button>
+                          </div>
+                        ) : (
+                          <label style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", border: "1px dashed #cbd5e1", borderRadius: 6, height: 100, cursor: "pointer", background: "#ffffff", textAlign: "center", padding: 8 }}>
+                            <span style={{ fontSize: 12, fontWeight: 600, color: "#334155" }}>
+                              {uploadingSectionImg === `${sec.id}-image1Url` ? "Uploading…" : "Upload Card 1"}
+                            </span>
+                            <span style={{ fontSize: 10.5, color: "#94a3b8" }}>600×338 (16:9)</span>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              style={{ display: "none" }}
+                              onChange={(e) => {
+                                const f = e.target.files?.[0];
+                                if (f) handleSectionImageUpload(sec.id, "image1Url", f);
+                              }}
+                            />
+                          </label>
+                        )}
+                        <input
+                          type="text"
+                          value={sec.caption1 || ""}
+                          onChange={(e) => updateSection(sec.id, "caption1", e.target.value)}
+                          placeholder="Caption 1 (optional)"
+                          style={{ fontSize: 11.5, padding: "5px 8px", borderRadius: 4, border: "1px solid #cbd5e1" }}
+                        />
+                      </div>
+
+                      {/* Image 2 (600px) */}
+                      <div style={{ display: "flex", flexDirection: "column", gap: 6, border: "1px solid #f1f5f9", padding: 8, borderRadius: 6, background: "#fafafa" }}>
+                        <span style={{ fontSize: 11.5, fontWeight: 700, color: "#475569" }}>Card 2 (Right - 600px Ratio)</span>
+                        {sec.image2Url ? (
+                          <div style={{ position: "relative", borderRadius: 6, overflow: "hidden", height: 120, background: "#0f172a" }}>
+                            <img src={resolveMediaUrl(sec.image2Url)} alt="Preview 2" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                            <button
+                              type="button"
+                              onClick={() => updateSection(sec.id, "image2Url", "")}
+                              style={{ position: "absolute", top: 6, right: 6, background: "rgba(0,0,0,0.75)", color: "#fff", border: "none", borderRadius: 4, padding: "2px 6px", fontSize: 10, cursor: "pointer" }}
+                            >
+                              Change
+                            </button>
+                          </div>
+                        ) : (
+                          <label style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", border: "1px dashed #cbd5e1", borderRadius: 6, height: 100, cursor: "pointer", background: "#ffffff", textAlign: "center", padding: 8 }}>
+                            <span style={{ fontSize: 12, fontWeight: 600, color: "#334155" }}>
+                              {uploadingSectionImg === `${sec.id}-image2Url` ? "Uploading…" : "Upload Card 2"}
+                            </span>
+                            <span style={{ fontSize: 10.5, color: "#94a3b8" }}>600×338 (16:9)</span>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              style={{ display: "none" }}
+                              onChange={(e) => {
+                                const f = e.target.files?.[0];
+                                if (f) handleSectionImageUpload(sec.id, "image2Url", f);
+                              }}
+                            />
+                          </label>
+                        )}
+                        <input
+                          type="text"
+                          value={sec.caption2 || ""}
+                          onChange={(e) => updateSection(sec.id, "caption2", e.target.value)}
+                          placeholder="Caption 2 (optional)"
+                          style={{ fontSize: 11.5, padding: "5px 8px", borderRadius: 4, border: "1px solid #cbd5e1" }}
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+
+              {/* Add New Section Action Buttons */}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  gap: 8,
+                  padding: "10px 14px",
+                  background: "#f8fafc",
+                  border: "1px dashed #cbd5e1",
+                  borderRadius: 8,
+                }}
+              >
+                <span style={{ fontSize: 12, fontWeight: 700, color: "#64748b", marginRight: 4 }}>+ Add Section:</span>
+                <button
+                  type="button"
+                  onClick={() => addSection("h2")}
+                  style={{ padding: "5px 10px", fontSize: 12, fontWeight: 600, background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: 6, cursor: "pointer", color: "#334155" }}
+                >
+                  + H2 Heading
+                </button>
+                <button
+                  type="button"
+                  onClick={() => addSection("h3")}
+                  style={{ padding: "5px 10px", fontSize: 12, fontWeight: 600, background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: 6, cursor: "pointer", color: "#334155" }}
+                >
+                  + H3 Subheading
+                </button>
+                <button
+                  type="button"
+                  onClick={() => addSection("paragraph")}
+                  style={{ padding: "5px 10px", fontSize: 12, fontWeight: 600, background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: 6, cursor: "pointer", color: "#334155" }}
+                >
+                  + Paragraph
+                </button>
+                <button
+                  type="button"
+                  onClick={() => addSection("image_full")}
+                  style={{ padding: "5px 10px", fontSize: 12, fontWeight: 600, background: "#fff7ed", border: "1px solid #fdba74", color: "#c2410c", borderRadius: 6, cursor: "pointer" }}
+                >
+                  + 1200px Full-Width Image
+                </button>
+                <button
+                  type="button"
+                  onClick={() => addSection("image_grid2")}
+                  style={{ padding: "5px 10px", fontSize: 12, fontWeight: 600, background: "#eff6ff", border: "1px solid #93c5fd", color: "#1d4ed8", borderRadius: 6, cursor: "pointer" }}
+                >
+                  + 2 Images Side-by-Side (600px + 600px)
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
 
         {/* Publish Status & Sort Order */}
         <div

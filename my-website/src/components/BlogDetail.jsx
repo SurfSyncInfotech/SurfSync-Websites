@@ -26,6 +26,64 @@ function resolveMediaUrl(url) {
   return `${API_BASE}${url.startsWith("/") ? "" : "/"}${url}`;
 }
 
+
+function renderBlogContent(raw, resolveMedia) {
+  if (!raw) return null;
+  // If content contains JSON sections format
+  if (typeof raw === "string" && raw.trim().startsWith("[") && raw.trim().endsWith("]")) {
+    try {
+      const sections = JSON.parse(raw);
+      if (Array.isArray(sections)) {
+        return sections.map((sec, idx) => {
+          if (sec.type === "h2") {
+            return <h2 key={idx} className="blog-content-h2">{sec.text}</h2>;
+          }
+          if (sec.type === "h3") {
+            return <h3 key={idx} className="blog-content-h3">{sec.text}</h3>;
+          }
+          if (sec.type === "image_full") {
+            const src = resolveMedia(sec.imageUrl);
+            if (!src) return null;
+            return (
+              <figure key={idx} className="blog-content-img-full">
+                <img src={src} alt={sec.caption || "Blog image"} loading="lazy" />
+                {sec.caption ? <figcaption>{sec.caption}</figcaption> : null}
+              </figure>
+            );
+          }
+          if (sec.type === "image_grid2") {
+            const src1 = resolveMedia(sec.image1Url);
+            const src2 = resolveMedia(sec.image2Url);
+            return (
+              <div key={idx} className="blog-content-img-grid2">
+                {src1 && (
+                  <figure className="blog-content-img-item">
+                    <img src={src1} alt={sec.caption1 || "Blog image 1"} loading="lazy" />
+                    {sec.caption1 ? <figcaption>{sec.caption1}</figcaption> : null}
+                  </figure>
+                )}
+                {src2 && (
+                  <figure className="blog-content-img-item">
+                    <img src={src2} alt={sec.caption2 || "Blog image 2"} loading="lazy" />
+                    {sec.caption2 ? <figcaption>{sec.caption2}</figcaption> : null}
+                  </figure>
+                )}
+              </div>
+            );
+          }
+          // Default text paragraph
+          return <p key={idx}>{sec.text}</p>;
+        });
+      }
+    } catch {
+      // Fallback to plain text if JSON parse fails
+    }
+  }
+
+  // Backward compatibility: If plain text, render paragraphs cleanly
+  return <p>{raw}</p>;
+}
+
 export default function BlogDetail({ slug }) {
   const [blog, setBlog] = useState(null);
   const [recentPosts, setRecentPosts] = useState([]);
@@ -57,7 +115,7 @@ export default function BlogDetail({ slug }) {
           const all = await recentRes.json();
           if (!ignore && Array.isArray(all)) {
             const domesticOnly = all.filter((b) => b.region === "domestic" || b.region === "both" || !b.region);
-            setRecentPosts(domesticOnly.filter((b) => b.slug !== slug).slice(0, 5));
+            setRecentPosts(domesticOnly.filter((b) => b.slug !== slug).slice(0, 8));
           }
         }
       } catch (err) {
@@ -152,7 +210,7 @@ export default function BlogDetail({ slug }) {
 
             {/* Full Body Description (Line breaks and formatting strictly preserved) */}
             <div className="blog-detail-content">
-              {blog.content}
+              {renderBlogContent(blog.content, resolveMediaUrl)}
             </div>
           </main>
 
@@ -168,22 +226,25 @@ export default function BlogDetail({ slug }) {
                   recentPosts.map((post) => {
                     const postThumb = resolveMediaUrl(post.imageUrl);
                     return (
-                      <article key={post.id || post.slug} className="blog-recent-item">
-                        <a href={`#blog-${post.slug}`} className="blog-recent-thumb-link">
+                      <article key={post.id || post.slug} className="blog-recent-card">
+                        <a href={`#blog-${post.slug}`} className="blog-recent-card-thumb-link" aria-label={post.title}>
                           <img
                             src={postThumb}
-                            alt=""
-                            className="blog-recent-thumb"
+                            alt={post.title}
+                            className="blog-recent-card-thumb"
                             onError={(e) => {
-                              e.target.src = "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=200&q=80";
+                              e.target.src = "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80";
                             }}
                           />
                         </a>
-                        <div className="blog-recent-info">
-                          <span className="blog-recent-date">{formatDate(post.publishedAt || post.createdAt)}</span>
-                          <h4 className="blog-recent-post-title">
+                        <div className="blog-recent-card-body">
+                          <span className="blog-recent-card-date">{formatDate(post.publishedAt || post.createdAt)}</span>
+                          <h4 className="blog-recent-card-title">
                             <a href={`#blog-${post.slug}`}>{post.title}</a>
                           </h4>
+                          {post.shortDescription && (
+                            <p className="blog-recent-card-desc">{post.shortDescription}</p>
+                          )}
                         </div>
                       </article>
                     );

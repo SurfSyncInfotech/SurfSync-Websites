@@ -1,0 +1,205 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap");
+
+.legal-page {
+  overflow: hidden;
+  padding-bottom: 190px;
+  background: #fff;
+  color: #14212b;
+  font-family: "Manrope", "Inter", sans-serif;
+}
+
+.legal-page h1,
+.legal-page h2 {
+  font-family: inherit;
+  color: #14212b;
+}
+
+.legal-page h1 span {
+  color: #f68713;
+}
+
+/* hero */
+.lg-hero {
+  padding: 72px 20px 64px;
+  text-align: center;
+  background: linear-gradient(180deg, #fff 0%, #f0fbfd 100%);
+}
+
+.lg-kicker {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.lg-hero h1 {
+  margin: 18px 0 0;
+  font-size: 64px;
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.045em;
+}
+
+.lg-lead {
+  max-width: 720px;
+  margin: 22px auto 0;
+  color: #617078;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.lg-date {
+  display: inline-block;
+  margin: 26px 0 0;
+  padding: 8px 16px;
+  border: 1px solid #e3e6e8;
+  border-radius: 999px;
+  background: #fff;
+  color: #617078;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* body */
+.lg-wrap {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 64px;
+  width: min(1100px, calc(100% - 40px));
+  margin: 64px auto 0;
+}
+
+.lg-toc {
+  position: sticky;
+  top: 110px;
+  align-self: start;
+  display: grid;
+  gap: 4px;
+}
+
+.lg-toc p {
+  margin: 0 0 8px;
+  color: #617078;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.lg-toc a {
+  padding: 7px 12px;
+  border-radius: 10px;
+  color: #3c4a52;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.lg-toc a:hover {
+  background: #fef3e6;
+  color: #f68713;
+}
+
+.lg-body section {
+  padding: 30px 0;
+  border-bottom: 1px solid #eef0f1;
+  scroll-margin-top: 110px;
+}
+
+.lg-body section:first-child {
+  padding-top: 0;
+}
+
+.lg-body h2 {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin: 0;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.lg-body h2 b {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  flex: none;
+  place-items: center;
+  border-radius: 12px;
+  background: #fef3e6;
+  color: #f68713;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.lg-body p,
+.lg-body li {
+  color: #4f5d65;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.lg-body p {
+  margin: 14px 0 0;
+}
+
+.lg-body ul {
+  display: grid;
+  gap: 8px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lg-body li {
+  position: relative;
+  padding-left: 22px;
+}
+
+.lg-body li::before {
+  content: "";
+  position: absolute;
+  top: 11px;
+  left: 4px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #f68713;
+}
+
+.lg-body li strong {
+  color: #14212b;
+}
+
+.lg-body a {
+  color: #f68713;
+  font-weight: 600;
+}
+
+.lg-body .lg-contact {
+  margin-top: 30px;
+  padding: 32px;
+  border: 0;
+  border-radius: 24px;
+  background: #f0fbfd;
+}
+
+@media (max-width: 860px) {
+  .lg-hero h1 {
+    font-size: 44px;
+  }
+
+  .lg-wrap {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    margin-top: 40px;
+  }
+
+  .lg-toc {
+    position: static;
+    display: none;
+  }
+}

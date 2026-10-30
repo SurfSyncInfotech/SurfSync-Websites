@@ -2,12 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import clientStories from "./clientStories";
 import ameerBrown from "../assets/case-modern-auto/client.jpg";
 import swagatArt from "../assets/swagat-suite.webp";
-import crmArt from "../assets/crm-card.webp";
 import hrmsArt from "../assets/hrms-card.webp";
 import patronArt from "../assets/patron-card.webp";
 import swagatAction from "../assets/swagat-action.webp";
 import hrmsAction from "../assets/hrms-action.webp";
-import crmAction from "../assets/crm-action.webp";
 import patronAction from "../assets/patron-action.webp";
 import patronInbox from "../assets/patron-inbox.png";
 import patronCampaign from "../assets/patron-campaign.png";
@@ -23,18 +21,6 @@ import patronChipDelivered from "../assets/patron-chip-delivered.png";
 import patronChipSent from "../assets/patron-chip-sent.png";
 import patronShot1 from "../assets/patron-shot-1.webp";
 import patronShot2 from "../assets/patron-shot-2.webp";
-import crmLead from "../assets/crm-lead.png";
-import crmFollow from "../assets/crm-follow.png";
-import crmPipeline from "../assets/crm-pipeline.png";
-import crmReports from "../assets/crm-reports.png";
-import crmCapture from "../assets/crm-capture.png";
-import crmPipeRow from "../assets/crm-pipe-row.png";
-import crmFollowRow from "../assets/crm-follow-row.png";
-import crmReportRow from "../assets/crm-report-row.png";
-import crmListLead from "../assets/crm-list-lead.png";
-import crmProcess from "../assets/crm-process.png";
-import crmChat from "../assets/crm-chat.png";
-import crmBars from "../assets/crm-bars.png";
 import hrmsProfile from "../assets/hrms-profile.png";
 import hrmsLeave from "../assets/hrms-leave.png";
 import hrmsAccess from "../assets/hrms-access.png";
@@ -50,10 +36,6 @@ import hrmsShot1 from "../assets/hrms-shot-1.webp";
 import hrmsShot2 from "../assets/hrms-shot-2.webp";
 import hrmsShot3 from "../assets/hrms-shot-3.webp";
 import hrmsShot4 from "../assets/hrms-shot-4.webp";
-import crmShot1 from "../assets/crm-shot-1.webp";
-import crmShot2 from "../assets/crm-shot-2.webp";
-import crmShot3 from "../assets/crm-shot-3.webp";
-import crmShot4 from "../assets/crm-shot-4.webp";
 import diwakar from "../assets/visionary-diwakar.webp";
 import tableIcon from "../assets/crm-lead.png";
 import kitchenIcon from "../assets/crm-follow.png";
@@ -81,16 +63,8 @@ const cards = [
     image: swagatArt,
   },
   {
-    id: "products-crm",
-    n: "2",
-    name: "Sales CRM",
-    tone: "sand",
-    image: crmArt,
-    imageClass: "is-wide",
-  },
-  {
     id: "products-hrms",
-    n: "3",
+    n: "2",
     name: "HRMS",
     tone: "mint",
     image: hrmsArt,
@@ -98,7 +72,7 @@ const cards = [
   },
   {
     id: "products-patron",
-    n: "4",
+    n: "3",
     name: "PatronPing WhatsApp API",
     tone: "leaf",
     image: patronArt,
@@ -220,63 +194,6 @@ const details = {
       },
     ],
   },
-  "products-crm": {
-    id: "products-crm",
-    tab: "Sales CRM",
-    title: "Sales CRM",
-    orangeTail: true,
-    lead: "Track leads, follow-ups, deals, and performance in one simple sales system.",
-    insideTitle: "What's inside Sales CRM",
-    insideLead:
-      "Everything your sales team needs to capture, manage, and convert leads in one place.",
-    seeLead: "A quick look at how Sales CRM works in real use.",
-    action: crmAction,
-    shots: [crmShot1, crmShot2, crmShot3, crmShot4],
-    points: [
-      [crmLead, "Lead Management", "Capture and organize every lead in one place."],
-      [crmFollow, "Follow-up Tracking", "Never miss a call, meeting, or next step."],
-      [crmPipeline, "Deal Pipeline", "Move deals forward with a clear visual pipeline."],
-      [crmReports, "Sales Reports", "See performance, revenue, and team activity instantly."],
-    ],
-    rows: [
-      {
-        title: "Lead Capture",
-        text: "Collect leads from website forms, WhatsApp, Facebook, referrals.",
-        chip: "List Lead",
-        meta: "SurfSync Infotech",
-        icon: crmCapture,
-        thumb: crmListLead,
-        thumbClass: "inside-seal is-card",
-      },
-      {
-        title: "Pipeline Management",
-        text: "Track: New Lead → Contacted → Proposal → Negotiation → Won.",
-        chip: "systematic process",
-        meta: "New → client",
-        icon: crmPipeRow,
-        thumb: crmProcess,
-        thumbClass: "inside-seal",
-      },
-      {
-        title: "Customer & Follow-ups",
-        text: "Keep notes, conversations, deal history, tasks, and reminders together.",
-        chip: "Requesting Follow up",
-        meta: "Hello, how it is going",
-        icon: crmFollowRow,
-        thumb: crmChat,
-        thumbClass: "inside-seal",
-      },
-      {
-        title: "Sales Reports",
-        text: "See where your leads come from, what converts, pipeline value, revenue.",
-        chip: "Reports Manage",
-        meta: "No 1 Infotech",
-        icon: crmReportRow,
-        thumb: crmBars,
-        thumbClass: "inside-seal",
-      },
-    ],
-  },
   "products-patron": {
     id: "products-patron",
     tab: "PatronPing",
@@ -336,7 +253,7 @@ const details = {
   },
 };
 
-const tabs = ["products-swagat", "products-hrms", "products-crm", "products-patron"];
+const tabs = ["products-swagat", "products-hrms", "products-patron"];
 
 function currentDetail() {
   const hash = window.location.hash.replace("#", "");
@@ -460,7 +377,7 @@ function Products() {
           <span>AI &amp; Custom Software</span>
         </h1>
         <p>
-          Ready products for restaurants, teams, sales, and WhatsApp — so the work you
+          Ready products for restaurants, teams, and WhatsApp — so the work you
           already do can move faster.
         </p>
         <a className="prod-btn" href="#products-grid">
@@ -477,7 +394,7 @@ function Products() {
           </span>
           <span>
             <i aria-hidden="true" />
-            Sales &amp; CRM
+            WhatsApp &amp; Messaging
           </span>
         </div>
       </section>
@@ -487,14 +404,14 @@ function Products() {
           <div>
             <p className="prod-kicker">Our products</p>
             <h2>
-              Four products
+              Three products
               <br />
               <span>one connected idea</span>
             </h2>
           </div>
           <p>
-            From the restaurant floor to HR, sales, and WhatsApp. Four products, one way
-            of working.
+            From the restaurant floor to HR and WhatsApp. Three products, one way of
+            working.
           </p>
         </div>
         <div className="prod-grid">
@@ -515,7 +432,7 @@ function Products() {
       <section className="prod-platform" id={product.id}>
         <p className="prod-kicker">Explore the products</p>
         <h2>
-          One platform. Four ways to
+          One platform. Three ways to
           <br />
           <span>move business forward</span>
         </h2>
@@ -564,9 +481,7 @@ function Products() {
       </section>
 
       <section
-        className={`prod-inside${product.id === "products-hrms" ? " is-hrms" : ""}${
-          product.id === "products-crm" ? " is-crm" : ""
-        }${product.id === "products-patron" ? " is-patron" : ""}`}
+        className={`prod-inside${product.id === "products-hrms" ? " is-hrms" : ""}${product.id === "products-patron" ? " is-patron" : ""}`}
       >
         <h2>{product.insideTitle}</h2>
         <p>{product.insideLead}</p>
@@ -599,9 +514,7 @@ function Products() {
       </section>
 
       <section
-        className={`prod-shots${product.id === "products-crm" ? " is-crm" : ""}${
-          product.id === "products-patron" ? " is-patron" : ""
-        }`}
+        className={`prod-shots${product.id === "products-patron" ? " is-patron" : ""}`}
       >
         <h2>
           See it <span>in action</span>

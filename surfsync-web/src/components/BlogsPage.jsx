@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import blogBanner from "../assets/Insights That Move Businesses Forward (1).png";
 import "./BlogsPage.css";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://127.0.0.1:4000";
+const API_BASE = import.meta.env.VITE_API_URL;
 
 const DEFAULT_BLOGS = [
   {

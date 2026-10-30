@@ -34,7 +34,9 @@
 
 .contact-form {
   grid-column: 2;
-  grid-row: 2;
+  grid-row: 1 / span 2;
+  align-self: start;
+  height: auto;
 }
 
 .contact-kicker {

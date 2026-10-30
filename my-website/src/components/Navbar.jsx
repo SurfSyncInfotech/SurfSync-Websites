@@ -36,13 +36,12 @@ const whatPanels = {
   },
   products: {
     label: "Products and Platforms",
-    intro: "Ready products for restaurants, HR, sales, and official WhatsApp.",
+    intro: "Ready products for restaurants, HR, and official WhatsApp.",
     cta: "View all products →",
     href: "#products",
     items: [
       ["Swagat Suite", "#products-swagat"],
       ["HRMS", "#products-hrms"],
-      ["Sales CRM", "#products-crm"],
       ["PatronPing WhatsApp API", "#products-patron"],
     ],
   },
@@ -84,10 +83,10 @@ const whoPanels = {
     intro:
       "Live project training, mentorship, and career-ready programs from SurfSync Academy.",
     cta: "Explore SurfSync Academy →",
-    href: "#careers",
+    href: "#academy",
     items: [
-      ["Academy programs", "#careers"],
-      ["Register", "#careers"],
+      ["Academy programs", "#academy"],
+      ["Register", "#contact"],
     ],
   },
 };

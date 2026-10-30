@@ -1,7 +1,7 @@
 import { useState } from "react";
-import heroVideo from "../assets/hero-gemini.mp4";
-import heroImageTop from "../assets/image3_hero.jpg";
-import heroImageBottom from "../assets/image2_hero.jpg";
+import heroAiVideo from "../assets/hero-ai-solutions.mp4";
+import heroWebAppVideo from "../assets/hero-web-app-dev.mp4";
+import heroTransformVideo from "../assets/hero-digital-transformation.mp4";
 import trustAmeer from "../assets/trust-avatar-ameer.webp";
 import trustShubham from "../assets/trust-avatar-shubham.webp";
 import StaggeredText from "./StaggeredText";
@@ -11,18 +11,18 @@ import "./buttons.css";
 const panels = [
   {
     type: "video",
-    src: heroVideo,
-    label: "Product preview",
+    src: heroAiVideo,
+    label: "AI & Software Solutions",
   },
   {
-    type: "image",
-    src: heroImageTop,
-    label: "Team reviewing work on a computer",
+    type: "video",
+    src: heroWebAppVideo,
+    label: "Web & App Development",
   },
   {
-    type: "image",
-    src: heroImageBottom,
-    label: "Team meeting around a conference table",
+    type: "video",
+    src: heroTransformVideo,
+    label: "Digital Transformation",
   },
 ];
 

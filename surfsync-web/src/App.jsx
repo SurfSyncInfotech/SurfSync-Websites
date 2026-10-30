@@ -9,6 +9,9 @@ import OurProcess from "./components/OurProcess";
 import Industries from "./components/Industries";
 import Visionaries from "./components/Visionaries";
 import Faq from "./components/Faq";
+import Contact from "./components/Contact";
+import LandingPage from "./components/LandingPage";
+import ThankYouPage from "./components/ThankYouPage";
 import serviceDetails from "./components/serviceDetails";
 import Footer from "./components/Footer";
 /* case study styles load up front, in this order, because later pages override earlier ones */
@@ -35,7 +38,6 @@ const loaders = {
   About: () => import("./components/About"),
   Products: () => import("./components/Products"),
   Projects: () => import("./components/Projects"),
-  Contact: () => import("./components/Contact"),
   ServicesPage: () => import("./components/ServicesPage"),
   ServiceDetail: () => import("./components/ServiceDetail"),
   CaseAtleast80: () => import("./components/CaseAtleast80"),
@@ -59,7 +61,6 @@ const loaders = {
 const About = lazy(loaders.About);
 const Products = lazy(loaders.Products);
 const Projects = lazy(loaders.Projects);
-const Contact = lazy(loaders.Contact);
 const ServicesPage = lazy(loaders.ServicesPage);
 const ServiceDetail = lazy(loaders.ServiceDetail);
 const CaseAtleast80 = lazy(loaders.CaseAtleast80);
@@ -137,9 +138,20 @@ function nextPage(hash) {
   return "home";
 }
 
+function resolvePage(pathname, hash) {
+  const cleanPath = pathname.replace(/\/+$/, "") || "/";
+  if (["/enquries/thank-you", "/enquiries/thank-you"].includes(cleanPath)) return "thank-you";
+  if (["/enquries", "/enquiries"].includes(cleanPath)) return "enquiries";
+  return nextPage(hash);
+}
+
 function renderPage(page) {
   return (
-    page === "about" ? (
+    page === "enquiries" ? (
+      <LandingPage />
+    ) : page === "thank-you" ? (
+      <ThankYouPage />
+    ) : page === "about" ? (
       <About />
     ) : page === "products" ? (
       <Products />
@@ -187,7 +199,6 @@ function renderPage(page) {
       <BlogDetail key={page} slug={page.slice(5)} />
     ) : (
       <>
-        {/* hero + client logos share the dotted backdrop, which also runs up behind the navbar */}
         <div className="home-top">
           <Hero />
           <Trusted />
@@ -255,7 +266,7 @@ function CaseGate({ children, onHold }) {
 
 function App() {
   const [hash, setHash] = useState(() => window.location.hash);
-  const [page, setPage] = useState(() => nextPage(window.location.hash));
+  const [page, setPage] = useState(() => resolvePage(window.location.pathname, window.location.hash));
   // true while a page is still on its way; the footer waits so it never shows first
   const [busy, setBusy] = useState(false);
 
@@ -298,9 +309,9 @@ function App() {
     const onHash = () => {
       const next = window.location.hash;
       // leave the old page's scroll position behind straight away
-      if (nextPage(next) !== "home") window.scrollTo({ top: 0, behavior: "instant" });
+      if (resolvePage(window.location.pathname, next) !== "home") window.scrollTo({ top: 0, behavior: "instant" });
       setHash(next);
-      setPage(nextPage(next));
+      setPage(resolvePage(window.location.pathname, next));
     };
 
     window.addEventListener("hashchange", onHash);
@@ -333,13 +344,13 @@ function App() {
 
   return (
     <div className={`app${page === "home" ? " is-home" : ""}`}>
-      <Navbar />
+      {page !== "enquiries" && page !== "thank-you" && <Navbar />}
       <main>
         <Suspense fallback={<Holding onHold={setBusy} />}>
           {page.startsWith("case-") ? <CaseGate key={page} onHold={setBusy}>{renderPage(page)}</CaseGate> : renderPage(page)}
         </Suspense>
       </main>
-      {!busy && <Footer />}
+      {page !== "enquiries" && page !== "thank-you" && !busy && <Footer />}
     </div>
   );
 }

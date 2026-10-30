@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import heroWaves from "../assets/services/svc-hero_w.svg";
 import "./ServicePricing.css";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://127.0.0.1:4000";
+const API_BASE = import.meta.env.VITE_API_URL;
 
 const DEFAULT_PACKAGES = {
   "mobile-apps": [
