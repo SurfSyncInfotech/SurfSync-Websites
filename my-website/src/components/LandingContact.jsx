@@ -229,7 +229,7 @@ function Contact({ compact = false }) {
         `Project type: ${projectType}`,
         `Estimated project budget: ${fields.budget}`,
         `Planned start: ${fields.timeline}`,
-        `Existing website: ${fields.existingWebsite}`,
+        `Existing ${fields.service === "App Development" ? "app" : "website"}: ${fields.existingWebsite}`,
         `Project requirements: ${fields.message.trim()}`,
       ].join("\n");
       const response = await fetch(FORM_ENDPOINT, {
@@ -390,7 +390,9 @@ function Contact({ compact = false }) {
                 {note("timeline")}
               </label>
               <label className="is-wide">
-                Do you already have a website? *
+                {fields.service === "App Development"
+                  ? "Do you already have an app? *"
+                  : "Do you already have a website? *"}
                 <select {...fieldProps("existingWebsite")} required>
                   <option value="">Choose an option</option>
                   {existingWebsiteOptions.map((option) => <option key={option} value={option}>{option}</option>)}
